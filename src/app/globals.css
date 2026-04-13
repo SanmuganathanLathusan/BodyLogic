@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-primary: #0F766E; /* Teal 600 */
+  --color-primary-dark: #115E59; /* Teal 700 */
+  --color-secondary: #0369A1; /* Sky 700 */
+  --color-secondary-dark: #075985; /* Sky 800 */
+  
+  --color-background-light: #F8FAFC; /* Slate 50 */
+  --color-background-dark: #0F172A; /* Slate 900 */
+  --color-card-light: #FFFFFF;
+  --color-card-dark: #1E293B; /* Slate 800 */
+  
+  --color-text-light: #0F172A; /* Slate 900 */
+  --color-text-dark: #F8FAFC; /* Slate 50 */
+  --color-text-muted-light: #475569; /* Slate 600 */
+  --color-text-muted-dark: #94A3B8; /* Slate 400 */
+}
+
+:root {
+  --background: var(--color-background-light);
+  --foreground: var(--color-text-light);
+  --card: var(--color-card-light);
+  --muted: var(--color-text-muted-light);
+}
+
+.dark {
+  --background: var(--color-background-dark);
+  --foreground: var(--color-text-dark);
+  --card: var(--color-card-dark);
+  --muted: var(--color-text-muted-dark);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Glassmorphism utilities */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.dark .glass {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
