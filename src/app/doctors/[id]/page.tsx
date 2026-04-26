@@ -173,14 +173,16 @@ export default function DoctorProfilePage({ params }: { params: Promise<{ id: st
                     {availableTimes.length > 0 ? (
                       <div className="grid grid-cols-2 gap-2">
                         {availableTimes.map((time: string) => (
-                          <button
+                          <motion.button
+                            whileHover={{ scale: 1.03 }}
+                            whileTap={{ scale: 0.97 }}
                             key={time}
                             type="button"
                             onClick={() => setSelectedTime(time)}
-                            className={`py-2 text-sm font-medium rounded-xl border transition-all ${selectedTime === time ? 'border-[var(--color-primary)] bg-teal-50 dark:bg-teal-900/40 text-[var(--color-primary)]' : 'border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 text-[var(--foreground)]'}`}
+                            className={`py-2 text-sm font-medium rounded-xl border transition-all ${selectedTime === time ? 'border-[var(--color-primary)] bg-teal-50 dark:bg-teal-900/40 text-[var(--color-primary)] shadow-md' : 'border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 text-[var(--foreground)]'}`}
                           >
                             {time}
-                          </button>
+                          </motion.button>
                         ))}
                       </div>
                     ) : (
