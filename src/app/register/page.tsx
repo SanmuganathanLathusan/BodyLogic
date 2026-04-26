@@ -14,7 +14,10 @@ export default function RegisterPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phoneNumber: '',
+    address: '',
     password: '',
+    confirmPassword: '',
     specialization: '',
     experience: '',
     consultationFee: '',
@@ -22,6 +25,12 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -118,14 +127,48 @@ export default function RegisterPage() {
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-[var(--foreground)]">Password</label>
-              <input
-                type="password" required
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="mt-1 block w-full px-3 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md shadow-sm bg-white dark:bg-zinc-900 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] sm:text-sm"
-              />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-[var(--foreground)]">Phone Number</label>
+                <input
+                  type="tel" required
+                  value={formData.phoneNumber}
+                  onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
+                  className="mt-1 block w-full px-3 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md shadow-sm bg-white dark:bg-zinc-900 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] sm:text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-[var(--foreground)]">Address</label>
+                <input
+                  type="text" required
+                  value={formData.address}
+                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                  className="mt-1 block w-full px-3 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md shadow-sm bg-white dark:bg-zinc-900 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-[var(--foreground)]">Password</label>
+                <input
+                  type="password" required
+                  value={formData.password}
+                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                  className="mt-1 block w-full px-3 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md shadow-sm bg-white dark:bg-zinc-900 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] sm:text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-[var(--foreground)]">Confirm Password</label>
+                <input
+                  type="password" required
+                  value={formData.confirmPassword}
+                  onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                  className="mt-1 block w-full px-3 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md shadow-sm bg-white dark:bg-zinc-900 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] sm:text-sm"
+                />
+              </div>
             </div>
 
             {role === 'doctor' && (
