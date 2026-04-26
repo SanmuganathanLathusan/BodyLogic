@@ -42,71 +42,77 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-64px)] flex-col justify-center py-12 sm:px-6 lg:px-8 bg-zinc-50 dark:bg-zinc-950">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <motion.div 
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          className="flex justify-center"
-        >
-          <HeartPulse className="h-12 w-12 text-[var(--color-primary)]" />
-        </motion.div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-[var(--foreground)]">
-          Welcome back
-        </h2>
-        <p className="mt-2 text-center text-sm text-[var(--muted)]">
-          Don't have an account?{' '}
-          <Link href="/register" className="font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-dark)]">
-            Sign up for free
-          </Link>
-        </p>
+    <div className="flex min-h-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-zinc-50 dark:bg-zinc-950 relative overflow-hidden">
+      {/* Background Orbs */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-[var(--color-primary)]/10 rounded-full blur-[100px]" />
+        <div className="absolute top-[60%] -right-[10%] w-[40%] h-[40%] bg-[var(--color-secondary)]/10 rounded-full blur-[100px]" />
       </div>
 
       <motion.div 
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.1 }}
-        className="mt-8 sm:mx-auto sm:w-full sm:max-w-md"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="w-full max-w-md z-10"
       >
-        <div className="glass py-8 px-4 sm:rounded-2xl sm:px-10 shadow-xl">
+        <div className="text-center mb-10">
+          <motion.div 
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", bounce: 0.5 }}
+            className="flex justify-center mb-6"
+          >
+            <div className="w-16 h-16 bg-white dark:bg-zinc-900 rounded-2xl shadow-xl flex items-center justify-center border border-zinc-100 dark:border-zinc-800 transform rotate-3 hover:-rotate-3 transition-transform">
+              <HeartPulse className="h-10 w-10 text-[var(--color-primary)]" />
+            </div>
+          </motion.div>
+          <h2 className="text-4xl font-extrabold text-[var(--foreground)] tracking-tight">
+            Welcome back
+          </h2>
+          <p className="mt-3 text-[var(--muted)] text-lg">
+            Don't have an account?{' '}
+            <Link href="/register" className="font-semibold text-[var(--color-primary)] hover:text-[var(--color-primary-dark)] underline-offset-4 hover:underline transition-all">
+              Sign up for free
+            </Link>
+          </p>
+        </div>
+
+        <div className="glass-card sm:rounded-[2rem] p-8 sm:p-10 shadow-2xl border border-white/50 dark:border-zinc-700/50">
           <form className="space-y-6" onSubmit={handleSubmit}>
-            <div>
-              <label className="block text-sm font-medium text-[var(--foreground)]">
+            <div className="space-y-1">
+              <label className="block text-sm font-semibold text-[var(--foreground)] mb-2">
                 Email address
               </label>
-              <div className="mt-1">
-                <input
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="appearance-none block w-full px-3 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md shadow-sm placeholder-zinc-400 focus:outline-none focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] sm:text-sm bg-white dark:bg-zinc-900"
-                />
-              </div>
+              <input
+                type="email"
+                required
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                className="appearance-none block w-full px-4 py-3.5 border-2 border-zinc-200 dark:border-zinc-800 rounded-xl placeholder-zinc-400 focus:outline-none focus:ring-0 focus:border-[var(--color-primary)] sm:text-md bg-white/50 dark:bg-zinc-900/50 transition-colors shadow-sm"
+                placeholder="you@example.com"
+              />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-[var(--foreground)]">
+            <div className="space-y-1">
+              <label className="block text-sm font-semibold text-[var(--foreground)] mb-2">
                 Password
               </label>
-              <div className="mt-1">
-                <input
-                  type="password"
-                  required
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="appearance-none block w-full px-3 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md shadow-sm placeholder-zinc-400 focus:outline-none focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] sm:text-sm bg-white dark:bg-zinc-900"
-                />
-              </div>
+              <input
+                type="password"
+                required
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                className="appearance-none block w-full px-4 py-3.5 border-2 border-zinc-200 dark:border-zinc-800 rounded-xl placeholder-zinc-400 focus:outline-none focus:ring-0 focus:border-[var(--color-primary)] sm:text-md bg-white/50 dark:bg-zinc-900/50 transition-colors shadow-sm"
+                placeholder="••••••••"
+              />
             </div>
 
-            <div>
+            <div className="pt-2">
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)] disabled:opacity-50 transition-colors"
+                className="w-full flex justify-center items-center py-4 px-4 border border-transparent rounded-xl shadow-lg text-md font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)] disabled:opacity-50 transition-all transform hover:-translate-y-0.5"
               >
-                {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Log in'}
+                {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : 'Sign In'}
               </button>
             </div>
           </form>
