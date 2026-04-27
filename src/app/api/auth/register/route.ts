@@ -8,7 +8,7 @@ export async function POST(request: Request) {
   try {
     await dbConnect();
     const body = await request.json();
-    const { name, email, password, role, specialization, experience, consultationFee } = body;
+    const { name, email, password, phoneNumber, address, role, specialization, experience, consultationFee } = body;
 
     if (!name || !email || !password || !role) {
       return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
@@ -26,6 +26,8 @@ export async function POST(request: Request) {
       name,
       email,
       password: hashedPassword,
+      phoneNumber,
+      address,
       role: role === 'doctor' ? 'doctor' : 'patient',
     });
 
