@@ -51,15 +51,23 @@ export default function Navbar() {
           
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-6">
+            <Link href="/" className="relative font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-2 py-1">
+              Home
+              <span className="absolute inset-x-0 bottom-0 h-0.5 bg-[var(--color-primary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
+            </Link>
             <Link href="/doctors" className="relative font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-2 py-1">
-              Find a Doctor
+              All Doctors
+              <span className="absolute inset-x-0 bottom-0 h-0.5 bg-[var(--color-primary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
+            </Link>
+            <Link href="/contact" className="relative font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-2 py-1">
+              Contact
               <span className="absolute inset-x-0 bottom-0 h-0.5 bg-[var(--color-primary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
             </Link>
             
             {session ? (
               <div className="flex items-center gap-4 ml-2 pl-6 border-l border-zinc-200 dark:border-zinc-800">
                 <Link
-                  href={session.user.role === 'doctor' ? '/dashboard/doctor' : '/dashboard/patient'}
+                  href={session.user.role === 'admin' ? '/dashboard/admin' : session.user.role === 'doctor' ? '/dashboard/doctor' : '/dashboard/patient'}
                   className="flex items-center gap-2 text-sm font-medium hover:text-[var(--color-primary)] transition-colors group"
                 >
                   <UserCircle className="h-5 w-5 text-zinc-500 group-hover:text-[var(--color-primary)] transition-colors" />
@@ -79,7 +87,7 @@ export default function Navbar() {
                   Log in
                 </Link>
                 <Link href="/register" className="text-sm font-medium bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] text-white px-5 py-2.5 rounded-full hover:shadow-lg hover:shadow-[var(--color-primary)]/30 transition-all transform hover:-translate-y-0.5">
-                  Sign up
+                  Create account
                 </Link>
               </div>
             )}
@@ -107,8 +115,14 @@ export default function Navbar() {
             className="md:hidden glass border-t border-zinc-200 dark:border-zinc-800 overflow-hidden"
           >
             <div className="px-4 py-4 flex flex-col gap-4">
+              <Link onClick={() => setMobileMenuOpen(false)} href="/" className="font-medium text-[var(--foreground)] p-2 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800">
+                Home
+              </Link>
               <Link onClick={() => setMobileMenuOpen(false)} href="/doctors" className="font-medium text-[var(--foreground)] p-2 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800">
-                Find a Doctor
+                All Doctors
+              </Link>
+              <Link onClick={() => setMobileMenuOpen(false)} href="/contact" className="font-medium text-[var(--foreground)] p-2 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800">
+                Contact
               </Link>
               
               <div className="h-px bg-zinc-200 dark:bg-zinc-800 w-full"></div>
@@ -117,7 +131,7 @@ export default function Navbar() {
                 <>
                   <Link
                     onClick={() => setMobileMenuOpen(false)}
-                    href={session.user.role === 'doctor' ? '/dashboard/doctor' : '/dashboard/patient'}
+                    href={session.user.role === 'admin' ? '/dashboard/admin' : session.user.role === 'doctor' ? '/dashboard/doctor' : '/dashboard/patient'}
                     className="flex items-center gap-2 font-medium text-[var(--foreground)] p-2 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800"
                   >
                     <UserCircle className="h-5 w-5" />
@@ -137,7 +151,7 @@ export default function Navbar() {
                     Log in
                   </Link>
                   <Link onClick={() => setMobileMenuOpen(false)} href="/register" className="w-full text-center font-medium bg-[var(--color-primary)] text-white px-4 py-2.5 rounded-xl hover:bg-[var(--color-primary-dark)] transition-colors">
-                    Sign up
+                    Create account
                   </Link>
                 </div>
               )}
