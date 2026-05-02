@@ -99,8 +99,12 @@ export default function DoctorsPage() {
                   <div className="bg-white dark:bg-zinc-900/80 rounded-[1.8rem] flex-1 flex flex-col h-full">
                     <div className="p-8 flex-1">
                       <div className="flex items-start justify-between mb-6">
-                        <div className="h-20 w-20 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)] text-white rounded-2xl flex items-center justify-center text-3xl font-bold shadow-md transform rotate-3 group-hover:-rotate-3 transition-transform">
-                          {doctor.userId?.name?.charAt(0) || 'D'}
+                        <div className="h-20 w-20 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)] text-white rounded-2xl flex items-center justify-center text-3xl font-bold shadow-md transform rotate-3 group-hover:-rotate-3 transition-transform overflow-hidden">
+                          {doctor.userId?.image ? (
+                            <img src={doctor.userId.image} alt={doctor.userId.name} className="w-full h-full object-cover" />
+                          ) : (
+                            <span>{doctor.userId?.name?.charAt(0) || 'D'}</span>
+                          )}
                         </div>
                         <div className="flex bg-[var(--color-secondary)]/10 text-[var(--color-secondary)] px-3 py-1 rounded-full text-sm font-semibold items-center gap-1">
                           <Star className="w-4 h-4 fill-current" /> 4.9
@@ -119,7 +123,7 @@ export default function DoctorsPage() {
                           <Clock className="w-5 h-5 mr-3 text-zinc-400" /> {doctor.experience} Years Exp.
                         </div>
                         <div className="flex items-center text-[var(--muted)] font-medium">
-                          <Award className="w-5 h-5 mr-3 text-zinc-400" /> Fee: <span className="text-[var(--foreground)] ml-1 font-bold">${doctor.consultationFee}</span>
+                          <Award className="w-5 h-5 mr-3 text-zinc-400" /> Fee: <span className="text-[var(--foreground)] ml-1 font-bold">LKR {doctor.consultationFee?.toLocaleString('en-US')}</span>
                         </div>
                       </div>
                     </div>
