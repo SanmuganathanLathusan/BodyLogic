@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, Clock, UserRound, XCircle, CheckCircle, Loader2, Activity, Save, Camera, Mail, Phone, MapPin, Edit3 } from 'lucide-react';
+import { formatDate } from '../../../lib/formatDate';
 import toast from 'react-hot-toast';
 
 export default function PatientDashboard() {
@@ -14,6 +15,10 @@ export default function PatientDashboard() {
   const [appointments, setAppointments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'appointments' | 'profile'>('appointments');
+  const [rescheduleId, setRescheduleId] = useState<string | null>(null);
+  const [rescheduleDate, setRescheduleDate] = useState(''); // ISO
+  const [rescheduleTime, setRescheduleTime] = useState('');
+  const [savingReschedule, setSavingReschedule] = useState(false);
 
   // Profile Form State
   const [profile, setProfile] = useState({ name: '', email: '', phoneNumber: '', address: '', image: '' });
@@ -64,14 +69,51 @@ export default function PatientDashboard() {
       const res = await fetch(`/api/appointments/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: 'cancelled' })
+        body: JSON.stringify({ action: 'cancel' })
       });
+      const data = await res.json();
       if (res.ok) {
-        toast.success('Appointment cancelled');
-        setAppointments(appointments.map(app => app._id === id ? { ...app, status: 'cancelled' } : app));
+        toast.success(data.message || 'Appointment cancelled');
+        setAppointments(appointments.map(app => app._id === id ? { ...app, status: 'cancelled', paymentStatus: data.refundEligible ? 'refunded' : app.paymentStatus } : app));
+      } else {
+        toast.error(data.message || 'Failed to cancel appointment');
       }
     } catch {
       toast.error('Failed to cancel appointment');
+    }
+  };
+
+  const openReschedule = (appointment: any) => {
+    setRescheduleId(appointment._id);
+    setRescheduleDate(appointment.date);
+    setRescheduleTime(appointment.time);
+  };
+
+  const handleReschedule = async (id: string) => {
+    if (!rescheduleDate || !rescheduleTime) {
+      toast.error('Please choose a new date and time');
+      return;
+    }
+
+    setSavingReschedule(true);
+    try {
+      const res = await fetch(`/api/appointments/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'reschedule', date: rescheduleDate, time: rescheduleTime })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        toast.success(data.message || 'Appointment rescheduled');
+        setAppointments(appointments.map(app => app._id === id ? { ...app, date: rescheduleDate, time: rescheduleTime } : app));
+        setRescheduleId(null);
+      } else {
+        toast.error(data.message || 'Failed to reschedule appointment');
+      }
+    } catch {
+      toast.error('Failed to reschedule appointment');
+    } finally {
+      setSavingReschedule(false);
     }
   };
 
@@ -119,7 +161,7 @@ export default function PatientDashboard() {
     return <div className="min-h-screen flex justify-center items-center"><Loader2 className="w-10 h-10 animate-spin text-[var(--color-primary)]" /></div>;
   }
 
-  const upcomingCount = appointments.filter(a => a.status === 'accepted' || a.status === 'pending').length;
+  const upcomingCount = appointments.filter(a => ['accepted', 'pending', 'confirmed'].includes(a.status)).length;
   const completedCount = appointments.filter(a => a.status === 'completed').length;
 
   return (
@@ -189,7 +231,7 @@ export default function PatientDashboard() {
               <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800 overflow-hidden">
                 {appointments.length === 0 ? (
                   <div className="p-12 text-center">
-                    <Calendar className="w-16 h-16 text-zinc-300 dark:text-zinc-700 mx-auto w-full flex justify-center mb-4" />
+                    <Calendar className="w-16 h-16 text-zinc-300 dark:text-zinc-700 mx-auto mb-4" />
                     <h3 className="text-xl font-medium text-[var(--foreground)] mb-2">No Appointments Yet</h3>
                     <p className="text-[var(--muted)] mb-6">You haven't scheduled any consultations with our experts.</p>
                     <button
@@ -210,7 +252,7 @@ export default function PatientDashboard() {
                           <div>
                             <h4 className="text-lg font-semibold text-[var(--foreground)]">Dr. {apt.doctorId?.name}</h4>
                             <div className="flex flex-wrap gap-4 mt-2 text-sm text-[var(--muted)]">
-                              <span className="flex items-center gap-1"><Calendar className="w-4 h-4" /> {apt.date}</span>
+                              <span className="flex items-center gap-1"><Calendar className="w-4 h-4" /> {formatDate(apt.date, { weekday: true, month: 'short' })}</span>
                               <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> {apt.time}</span>
                             </div>
                           </div>
@@ -220,6 +262,7 @@ export default function PatientDashboard() {
                           <span className={`px-3 py-1 text-xs font-medium rounded-full uppercase tracking-wider
                             ${apt.status === 'accepted' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
                               apt.status === 'pending' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' :
+                              apt.status === 'confirmed' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
                               apt.status === 'completed' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400' :
                               'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
                             }`}
@@ -227,15 +270,63 @@ export default function PatientDashboard() {
                             {apt.status}
                           </span>
 
-                          {(apt.status === 'pending' || apt.status === 'accepted') && (
-                            <button 
-                              onClick={() => handleCancel(apt._id)}
-                              className="text-sm font-medium text-red-500 hover:text-red-600 transition-colors flex items-center gap-1"
-                            >
-                               Cancel <XCircle className="w-4 h-4" />
-                            </button>
+                          {['pending', 'accepted', 'confirmed'].includes(apt.status) && (
+                            <div className="flex gap-3">
+                              <button 
+                                onClick={() => openReschedule(apt)}
+                                className="text-sm font-medium text-[var(--color-primary)] hover:opacity-80 transition-colors flex items-center gap-1"
+                              >
+                                Reschedule <Edit3 className="w-4 h-4" />
+                              </button>
+                              <button 
+                                onClick={() => handleCancel(apt._id)}
+                                className="text-sm font-medium text-red-500 hover:text-red-600 transition-colors flex items-center gap-1"
+                              >
+                                 Cancel <XCircle className="w-4 h-4" />
+                              </button>
+                            </div>
                           )}
                         </div>
+
+                        {rescheduleId === apt._id && (
+                          <div className="mt-4 sm:mt-6 w-full border-t border-zinc-100 dark:border-zinc-800 pt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div className="relative">
+                                <input
+                                  type="date"
+                                  value={rescheduleDate}
+                                  min={new Date().toISOString().split('T')[0]}
+                                  onChange={(e) => setRescheduleDate(e.target.value)}
+                                  className="px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 focus:ring-2 focus:ring-[var(--color-primary)] outline-none w-full"
+                                />
+                                {!rescheduleDate && (
+                                  <span className="pointer-events-none select-none absolute inset-y-0 left-3 flex items-center text-sm text-[var(--muted)]">dd/mm/yyyy</span>
+                                )}
+                            </div>
+                            <input
+                              type="time"
+                              value={rescheduleTime}
+                              onChange={(e) => setRescheduleTime(e.target.value)}
+                              className="px-3 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 focus:ring-2 focus:ring-[var(--color-primary)] outline-none"
+                            />
+                            <div className="flex gap-2">
+                              <button
+                                type="button"
+                                onClick={() => handleReschedule(apt._id)}
+                                disabled={savingReschedule}
+                                className="flex-1 px-4 py-2.5 rounded-xl text-sm font-medium text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] disabled:opacity-50"
+                              >
+                                {savingReschedule ? 'Saving...' : 'Save'}
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => setRescheduleId(null)}
+                                className="px-4 py-2.5 rounded-xl text-sm font-medium border border-zinc-200 dark:border-zinc-800"
+                              >
+                                Close
+                              </button>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
