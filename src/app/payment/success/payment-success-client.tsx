@@ -83,7 +83,7 @@ export default function PaymentSuccessClient() {
             <h2 className="text-3xl font-bold text-(--foreground) mb-2">Payment Successful!</h2>
             <p className="text-(--muted) mb-6">Your appointment has been confirmed. A confirmation email will be sent to you shortly.</p>
             <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl p-4 mb-6">
-              <p className="text-sm font-medium text-green-700 dark:text-green-400">✓ Payment of LKR 1,650 completed</p>
+              <p className="text-sm font-medium text-green-700 dark:text-green-400">✓ Payment completed</p>
               <p className="text-sm font-medium text-green-700 dark:text-green-400 mt-1">✓ Appointment confirmed</p>
             </div>
             <p className="text-sm text-(--muted) mb-6">Redirecting to your dashboard in 3 seconds...</p>
