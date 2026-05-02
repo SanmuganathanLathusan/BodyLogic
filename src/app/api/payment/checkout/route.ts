@@ -3,7 +3,9 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { getPayPalAccessToken, getPayPalApiBase } from '@/lib/paypal';
 
-const CONSULTATION_FEE = '1650.00';
+const CONSULTATION_FEE_LKR = 1650;
+const PAYPAL_EXCHANGE_RATE_LKR_PER_USD = 300;
+const CONSULTATION_FEE_USD = (CONSULTATION_FEE_LKR / PAYPAL_EXCHANGE_RATE_LKR_PER_USD).toFixed(2);
 
 export async function POST(request: Request) {
   try {
@@ -39,8 +41,8 @@ export async function POST(request: Request) {
             }),
             description: `Consultation with Dr. ${doctorName} - ${doctorSpecialization} - ${date} at ${time}`,
             amount: {
-              currency_code: 'LKR',
-              value: CONSULTATION_FEE,
+              currency_code: 'USD',
+              value: CONSULTATION_FEE_USD,
             },
           },
         ],
@@ -55,7 +57,8 @@ export async function POST(request: Request) {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to create PayPal order');
+      const errorText = await response.text();
+      throw new Error(`Failed to create PayPal order: ${errorText}`);
     }
 
     const order = await response.json();
