@@ -53,15 +53,15 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-6">
             <Link href="/" className="relative font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-2 py-1">
               Home
-              <span className="absolute inset-x-0 bottom-0 h-0.5 bg-[var(--color-primary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
+              <span className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
             </Link>
             <Link href="/doctors" className="relative font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-2 py-1">
               All Doctors
-              <span className="absolute inset-x-0 bottom-0 h-0.5 bg-[var(--color-primary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
+              <span className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
             </Link>
             <Link href="/contact" className="relative font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-2 py-1">
               Contact
-              <span className="absolute inset-x-0 bottom-0 h-0.5 bg-[var(--color-primary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
+              <span className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
             </Link>
             
             {session ? (
@@ -86,7 +86,7 @@ export default function Navbar() {
                 <Link href="/login" className="text-sm font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors px-3 py-2">
                   Log in
                 </Link>
-                <Link href="/register" className="text-sm font-medium bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] text-white px-5 py-2.5 rounded-full hover:shadow-lg hover:shadow-[var(--color-primary)]/30 transition-all transform hover:-translate-y-0.5">
+                <Link href="/register" className="text-sm font-medium bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-secondary)] to-[var(--color-secondary-dark)] text-white px-5 py-2.5 rounded-full hover:shadow-lg hover:shadow-[var(--color-primary)]/30 transition-all transform hover:-translate-y-0.5">
                   Create account
                 </Link>
               </div>
