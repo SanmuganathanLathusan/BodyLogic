@@ -5,6 +5,8 @@ import User from '@/models/User';
 import Doctor from '@/models/Doctor';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import fs from 'fs';
+import path from 'path';
 
 export async function GET() {
   try {
@@ -37,7 +39,7 @@ export async function POST(request: Request) {
 
     await dbConnect();
     const body = await request.json();
-    const { name, email, password, specialization, experience, consultationFee } = body;
+    const { name, email, password, specialization, experience, consultationFee, imageBase64, imageName } = body;
 
     if (!name || !email || !password || !specialization) {
       return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
@@ -49,14 +51,33 @@ export async function POST(request: Request) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    
+
+    // handle optional image (base64) -> save to public/uploads
+    let publicImagePath: string | undefined = undefined;
+    if (imageBase64 && imageName) {
+      try {
+        const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
+        await fs.promises.mkdir(uploadsDir, { recursive: true });
+        const base64Data = imageBase64.replace(/^data:.*;base64,/, '');
+        const safeName = `${Date.now()}-${imageName.replace(/[^a-zA-Z0-9._-]/g, '-')}`;
+        const filePath = path.join(uploadsDir, safeName);
+        await fs.promises.writeFile(filePath, Buffer.from(base64Data, 'base64'));
+        publicImagePath = `/uploads/${safeName}`;
+      } catch (err) {
+        console.error('Error saving uploaded image:', err);
+      }
+    }
+
     // Create the User first
-    const user = await User.create({
+    const userData: any = {
       name,
       email,
       password: hashedPassword,
       role: 'doctor',
-    });
+    };
+    if (publicImagePath) userData.image = publicImagePath;
+
+    const user = await User.create(userData);
 
     // Create Doctor profile immediately approved
     const doctor = await Doctor.create({

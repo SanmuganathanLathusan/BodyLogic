@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -13,13 +13,18 @@ export default function AdminDashboard() {
   
   const [stats, setStats] = useState({ patients: 0, doctors: 0, appointments: 0 });
   const [doctors, setDoctors] = useState<any[]>([]);
+  const [appointments, setAppointments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   
   // Add Doctor Form State
   const [showAddForm, setShowAddForm] = useState(false);
   const [formData, setFormData] = useState({
-    name: '', email: '', password: '', specialization: '', experience: 0, consultationFee: 100
+    name: '', email: '', password: '', specialization: '', experience: 0, consultationFee: 1650,
+    imageBase64: '', imageName: ''
   });
+
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -31,17 +36,14 @@ export default function AdminDashboard() {
 
   const fetchData = async () => {
     try {
-      const [statsRes, docsRes] = await Promise.all([
+      const [statsRes, docsRes, apptRes] = await Promise.all([
         fetch('/api/admin/stats'),
-        fetch('/api/admin/doctors')
+        fetch('/api/admin/doctors'),
+        fetch('/api/appointments')
       ]);
-      
-      if (statsRes.ok) {
-        setStats(await statsRes.json());
-      }
-      if (docsRes.ok) {
-        setDoctors(await docsRes.json());
-      }
+      if (statsRes.ok) setStats(await statsRes.json());
+      if (docsRes.ok) setDoctors(await docsRes.json());
+      if (apptRes.ok) setAppointments(await apptRes.json());
     } catch (error) {
       console.error(error);
     } finally {
@@ -99,7 +101,8 @@ export default function AdminDashboard() {
       if (res.ok) {
         toast.success('Doctor created successfully');
         setShowAddForm(false);
-        setFormData({ name: '', email: '', password: '', specialization: '', experience: 0, consultationFee: 100 });
+        setFormData({ name: '', email: '', password: '', specialization: '', experience: 0, consultationFee: 1650, imageBase64: '', imageName: '' });
+        setImagePreview(null);
         fetchData();
       } else {
         const data = await res.json();
@@ -108,6 +111,18 @@ export default function AdminDashboard() {
     } catch {
       toast.error('Failed to create doctor');
     }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      setFormData(prev => ({ ...prev, imageBase64: result, imageName: file.name }));
+      setImagePreview(result);
+    };
+    reader.readAsDataURL(file);
   };
 
   if (loading || status === 'loading') {
@@ -196,8 +211,21 @@ export default function AdminDashboard() {
                       <input required type="number" value={formData.experience} onChange={e => setFormData({...formData, experience: Number(e.target.value)})} className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 focus:ring-2 focus:ring-[var(--color-primary)] outline-none" min="0" />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-[var(--foreground)]">Consultation Fee ($)</label>
+                      <label className="text-sm font-medium text-[var(--foreground)]">Consultation Fee (LKR)</label>
                       <input required type="number" value={formData.consultationFee} onChange={e => setFormData({...formData, consultationFee: Number(e.target.value)})} className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 focus:ring-2 focus:ring-[var(--color-primary)] outline-none" min="0" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-[var(--foreground)]">Doctor Image</label>
+                      <div className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex items-center justify-between gap-4">
+                        <div className="text-[var(--muted)] text-sm">{formData.imageName ? formData.imageName : 'No file chosen'}</div>
+                        <div className="flex items-center gap-3">
+                          <button type="button" onClick={() => fileInputRef.current?.click()} className="px-3 py-1.5 rounded-md bg-[var(--color-primary)] text-white text-sm">Choose File</button>
+                        </div>
+                      </div>
+                      <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+                      {imagePreview && (
+                        <img src={imagePreview} alt="preview" className="mt-3 w-28 h-28 object-cover rounded-xl border" />
+                      )}
                     </div>
                   </div>
                   <div className="flex justify-end">
@@ -234,8 +262,12 @@ export default function AdminDashboard() {
                     <tr key={doctor._id} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/20 transition-colors">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 rounded-full flex items-center justify-center font-bold">
-                            {doctor.userId?.name?.charAt(0) || 'D'}
+                          <div className="h-10 w-10 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 rounded-full flex items-center justify-center font-bold overflow-hidden">
+                            {doctor.userId?.image ? (
+                              <img src={doctor.userId.image} alt={doctor.userId.name} className="w-full h-full object-cover" />
+                            ) : (
+                              <span>{doctor.userId?.name?.charAt(0) || 'D'}</span>
+                            )}
                           </div>
                           <div>
                             <p className="font-medium text-[var(--foreground)]">{doctor.userId?.name}</p>
@@ -262,6 +294,57 @@ export default function AdminDashboard() {
                         >
                           Remove
                         </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+        
+        <div className="mt-8 bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+          <div className="p-6 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
+            <h2 className="text-xl font-semibold text-[var(--foreground)]">Recent Appointments</h2>
+            <p className="text-sm text-[var(--muted)] mt-1">View recent bookings with patient and doctor details</p>
+          </div>
+          {appointments.length === 0 ? (
+            <div className="p-8 text-center text-[var(--muted)]">No appointments found.</div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm whitespace-nowrap">
+                <thead className="bg-zinc-50 dark:bg-zinc-900 text-zinc-500 border-b border-zinc-200 dark:border-zinc-800">
+                  <tr>
+                    <th className="px-6 py-4 font-medium">Patient</th>
+                    <th className="px-6 py-4 font-medium">Doctor</th>
+                    <th className="px-6 py-4 font-medium">Date</th>
+                    <th className="px-6 py-4 font-medium">Time</th>
+                    <th className="px-6 py-4 font-medium">Payment</th>
+                    <th className="px-6 py-4 font-medium">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+                  {appointments.map((appt) => (
+                    <tr key={appt._id} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/20 transition-colors">
+                      <td className="px-6 py-4">
+                        <div className="font-medium text-[var(--foreground)]">{appt.patientId?.name || appt.patientName || '—'}</div>
+                        <div className="text-xs text-[var(--muted)]">{appt.patientId?.email || appt.patientEmail || ''}</div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="font-medium text-[var(--foreground)]">{appt.doctorId?.name || appt.doctorName || '—'}</div>
+                        <div className="text-xs text-[var(--muted)]">{appt.doctorProfile?.specialization || appt.doctorId?.specialization || ''}</div>
+                      </td>
+                      <td className="px-6 py-4 text-[var(--muted)]">{new Date(appt.date).toLocaleDateString()}</td>
+                      <td className="px-6 py-4 text-[var(--muted)]">{appt.time}</td>
+                      <td className="px-6 py-4">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${appt.paymentStatus === 'paid' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'}`}>
+                          {appt.paymentStatus || (appt.status === 'confirmed' ? 'paid' : 'unpaid')}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${appt.status === 'confirmed' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-700 dark:bg-gray-800/30 dark:text-gray-400'}`}>
+                          {appt.status}
+                        </span>
                       </td>
                     </tr>
                   ))}
