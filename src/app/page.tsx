@@ -2,8 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Activity, CalendarCheck, ShieldCheck, HeartPulse, Stethoscope, Clock, Search, Users, TrendingUp, Award } from 'lucide-react';
-import Image from 'next/image';
+import { Activity, CalendarCheck, ShieldCheck, HeartPulse, Clock, Search, Users, Award } from 'lucide-react';
 
 export default function Home() {
   const containerVariants = {
@@ -38,18 +37,6 @@ export default function Home() {
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col lg:flex-row items-center gap-12">
           <div className="text-center lg:text-left lg:w-1/2">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-primary)]/10 text-[var(--color-primary)] font-medium text-sm mb-6"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-primary)] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--color-primary)]"></span>
-              </span>
-              Over 1,000 Verified Specialists
-            </motion.div>
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
