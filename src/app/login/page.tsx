@@ -16,6 +16,9 @@ export default function LoginPage() {
     password: '',
   });
 
+  const inputClassName =
+    'appearance-none block w-full rounded-xl border-2 border-zinc-200/90 bg-white/70 px-4 py-3.5 text-sm shadow-sm outline-none transition-all placeholder:text-zinc-400 focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10 dark:border-zinc-800 dark:bg-zinc-950/60 dark:focus:bg-zinc-900';
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -34,7 +37,7 @@ export default function LoginPage() {
         router.push('/');
         router.refresh();
       }
-    } catch (error) {
+    } catch {
       toast.error('An error occurred. Please try again.');
     } finally {
       setLoading(false);
@@ -42,66 +45,60 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-zinc-50 dark:bg-zinc-950 relative overflow-hidden">
-      {/* Background Orbs */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] bg-[var(--color-primary)]/10 rounded-full blur-[100px]" />
-        <div className="absolute top-[60%] -right-[10%] w-[40%] h-[40%] bg-[var(--color-secondary)]/10 rounded-full blur-[100px]" />
+    <div className="relative min-h-[calc(100vh-64px)] flex items-center justify-center overflow-hidden bg-linear-to-b from-white via-zinc-50 to-white px-4 py-12 pt-6 sm:pt-10 lg:pt-16 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-900 sm:px-6 lg:px-8">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -top-24 left-1/3 h-72 w-72 rounded-full bg-primary/12 blur-3xl" />
+        <div className="absolute bottom-0 right-[-5rem] h-80 w-80 rounded-full bg-secondary/10 blur-3xl" />
       </div>
 
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
+      <motion.div
+        initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md z-10"
+        className="relative mx-auto grid w-full max-w-5xl gap-8 lg:grid-cols-[0.95fr_1.05fr]"
       >
-        <div className="text-center mb-10">
-          <motion.div 
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: "spring", bounce: 0.5 }}
-            className="flex justify-center mb-6"
-          >
-            <div className="w-16 h-16 bg-white dark:bg-zinc-900 rounded-2xl shadow-xl flex items-center justify-center border border-zinc-100 dark:border-zinc-800 transform rotate-3 hover:-rotate-3 transition-transform">
-              <HeartPulse className="h-10 w-10 text-[var(--color-primary)]" />
+        <div className="flex flex-col justify-between rounded-4xl border border-zinc-200/70 bg-white/80 p-8 shadow-[0_30px_100px_-45px_rgba(15,23,42,0.45)] backdrop-blur-xl dark:border-zinc-800 dark:bg-zinc-950/75 sm:p-10">
+          <div>
+            <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-linear-to-br from-primary to-secondary text-white shadow-lg shadow-(--color-primary)/20">
+              <HeartPulse className="h-7 w-7" />
             </div>
-          </motion.div>
-          <h2 className="text-4xl font-extrabold text-[var(--foreground)] tracking-tight">
-            Welcome back
-          </h2>
-          <p className="mt-3 text-[var(--muted)] text-lg">
-            Don't have an account?{' '}
-            <Link href="/register" className="font-semibold text-[var(--color-primary)] hover:text-[var(--color-primary-dark)] underline-offset-4 hover:underline transition-all">
-              Sign up for free
+            <h1 className="mt-6 text-4xl font-black tracking-tight text-(--foreground)">
+              Welcome back
+            </h1>
+            <p className="mt-4 max-w-md text-base leading-7 text-(--muted)">
+              Sign in to manage appointments, doctors, and your care history from one secure place.
+            </p>
+          </div>
+
+          <div className="mt-8 rounded-3xl border border-zinc-200/70 bg-zinc-50/80 p-5 text-sm text-(--muted) dark:border-zinc-800 dark:bg-zinc-900/60">
+            New here?{' '}
+            <Link href="/register" className="font-semibold text-primary underline-offset-4 hover:underline">
+              Create an account
             </Link>
-          </p>
+          </div>
         </div>
 
-        <div className="glass-card sm:rounded-[2rem] p-8 sm:p-10 shadow-2xl border border-white/50 dark:border-zinc-700/50">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div className="space-y-1">
-              <label className="block text-sm font-semibold text-[var(--foreground)] mb-2">
-                Email address
-              </label>
+        <div className="rounded-4xl border border-zinc-200/70 bg-white/85 p-6 shadow-[0_30px_100px_-45px_rgba(15,23,42,0.45)] backdrop-blur-xl sm:p-8 dark:border-zinc-800 dark:bg-zinc-950/75">
+          <form className="space-y-5" onSubmit={handleSubmit}>
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-(--foreground)">Email address</label>
               <input
                 type="email"
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="appearance-none block w-full px-4 py-3.5 border-2 border-zinc-200 dark:border-zinc-800 rounded-xl placeholder-zinc-400 focus:outline-none focus:ring-0 focus:border-[var(--color-primary)] sm:text-md bg-white/50 dark:bg-zinc-900/50 transition-colors shadow-sm"
+                className={inputClassName}
                 placeholder="you@example.com"
               />
             </div>
 
-            <div className="space-y-1">
-              <label className="block text-sm font-semibold text-[var(--foreground)] mb-2">
-                Password
-              </label>
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-(--foreground)">Password</label>
               <input
                 type="password"
                 required
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="appearance-none block w-full px-4 py-3.5 border-2 border-zinc-200 dark:border-zinc-800 rounded-xl placeholder-zinc-400 focus:outline-none focus:ring-0 focus:border-[var(--color-primary)] sm:text-md bg-white/50 dark:bg-zinc-900/50 transition-colors shadow-sm"
+                className={inputClassName}
                 placeholder="••••••••"
               />
             </div>
@@ -110,7 +107,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex justify-center items-center py-4 px-4 border border-transparent rounded-xl shadow-lg text-md font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)] disabled:opacity-50 transition-all transform hover:-translate-y-0.5"
+                className="inline-flex w-full items-center justify-center rounded-xl bg-linear-to-r from-primary to-secondary px-4 py-4 text-sm font-bold text-white shadow-lg shadow-(--color-primary)/20 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-(--color-primary)/25 focus:outline-none focus:ring-4 focus:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : 'Sign In'}
               </button>
