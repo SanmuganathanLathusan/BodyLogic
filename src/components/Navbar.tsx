@@ -41,52 +41,52 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <div className="flex shrink-0 items-center">
-            <Link href="/" className="flex items-center gap-2 group">
-              <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-[var(--color-primary)]/10 text-[var(--color-primary)] transition-transform duration-300 group-hover:scale-110 group-hover:bg-[var(--color-primary)]/20">
+            <Link href="/" className="flex items-center gap-2.5 group">
+              <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-white shadow-lg shadow-[var(--color-primary)]/30 transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl group-hover:shadow-[var(--color-primary)]/50">
                 <HeartPulse className="h-6 w-6" />
               </div>
-              <span className="font-bold text-2xl tracking-tight text-[var(--foreground)]">Body<span className="text-[var(--color-primary)]">logic</span></span>
+              <span className="font-bold text-xl tracking-tight text-[var(--foreground)]">Body<span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)]">logic</span></span>
             </Link>
           </div>
           
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-6">
-            <Link href="/" className="relative font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-2 py-1">
+          <div className="hidden md:flex items-center gap-2">
+            <Link href="/" className="relative font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-3 py-2 rounded-lg hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50">
               Home
-              <span className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
+              <span className="absolute inset-x-0 bottom-1 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 rounded-full"></span>
             </Link>
-            <Link href="/doctors" className="relative font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-2 py-1">
+            <Link href="/doctors" className="relative font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-3 py-2 rounded-lg hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50">
               All Doctors
-              <span className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
+              <span className="absolute inset-x-0 bottom-1 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 rounded-full"></span>
             </Link>
-            <Link href="/contact" className="relative font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-2 py-1">
+            <Link href="/contact" className="relative font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-3 py-2 rounded-lg hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50">
               Contact
-              <span className="absolute inset-x-0 bottom-0 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100"></span>
+              <span className="absolute inset-x-0 bottom-1 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 rounded-full"></span>
             </Link>
             
             {session ? (
-              <div className="flex items-center gap-4 ml-2 pl-6 border-l border-zinc-200 dark:border-zinc-800">
+              <div className="flex items-center gap-3 ml-4 pl-6 border-l border-zinc-200 dark:border-zinc-800">
                 <Link
                   href={session.user.role === 'admin' ? '/dashboard/admin' : session.user.role === 'doctor' ? '/dashboard/doctor' : '/dashboard/patient'}
-                  className="flex items-center gap-2 text-sm font-medium hover:text-[var(--color-primary)] transition-colors group"
+                  className="flex items-center gap-2 text-sm font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-3 py-2 rounded-lg hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50"
                 >
                   <UserCircle className="h-5 w-5 text-zinc-500 group-hover:text-[var(--color-primary)] transition-colors" />
                   <span>Dashboard</span>
                 </Link>
                 <button
                   onClick={() => signOut({ callbackUrl: '/' })}
-                  className="flex items-center gap-1 text-sm font-medium text-red-500 hover:text-red-600 transition-colors px-3 py-1.5 rounded-full hover:bg-red-50 dark:hover:bg-red-950/30"
+                  className="flex items-center gap-1.5 text-sm font-medium text-red-500 hover:text-red-600 transition-colors px-3.5 py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/30"
                 >
                   <LogOut className="h-4 w-4" />
                   <span>Logout</span>
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-3 ml-2 pl-6 border-l border-zinc-200 dark:border-zinc-800">
-                <Link href="/login" className="text-sm font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors px-3 py-2">
+              <div className="flex items-center gap-2 ml-4 pl-6 border-l border-zinc-200 dark:border-zinc-800">
+                <Link href="/login" className="text-sm font-semibold text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors px-4 py-2 rounded-lg hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50">
                   Log in
                 </Link>
-                <Link href="/register" className="text-sm font-medium bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-secondary)] to-[var(--color-secondary-dark)] text-white px-5 py-2.5 rounded-full hover:shadow-lg hover:shadow-[var(--color-primary)]/30 transition-all transform hover:-translate-y-0.5">
+                <Link href="/register" className="text-sm font-semibold btn-premium bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-secondary)] to-[var(--color-secondary-dark)] text-white px-5 py-2.5 rounded-lg shadow-lg shadow-[var(--color-primary)]/40 hover:shadow-xl hover:shadow-[var(--color-primary)]/50">
                   Create account
                 </Link>
               </div>
@@ -147,10 +147,10 @@ export default function Navbar() {
                 </>
               ) : (
                 <div className="flex flex-col gap-3 pt-2">
-                  <Link onClick={() => setMobileMenuOpen(false)} href="/login" className="w-full text-center font-medium border border-zinc-300 dark:border-zinc-700 text-[var(--foreground)] px-4 py-2.5 rounded-xl hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors">
+                  <Link onClick={() => setMobileMenuOpen(false)} href="/login" className="w-full text-center font-semibold border-2 border-zinc-300 dark:border-zinc-700 text-[var(--foreground)] px-4 py-3 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all transform hover:scale-105">
                     Log in
                   </Link>
-                  <Link onClick={() => setMobileMenuOpen(false)} href="/register" className="w-full text-center font-medium bg-[var(--color-primary)] text-white px-4 py-2.5 rounded-xl hover:bg-[var(--color-primary-dark)] transition-colors">
+                  <Link onClick={() => setMobileMenuOpen(false)} href="/register" className="w-full text-center font-semibold btn-premium bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-secondary)] to-[var(--color-secondary-dark)] text-white px-4 py-3 rounded-lg shadow-lg shadow-[var(--color-primary)]/40">
                     Create account
                   </Link>
                 </div>
