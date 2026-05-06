@@ -60,11 +60,11 @@ export default function Home() {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4"
             >
-              <Link href="/doctors" className="px-8 py-4 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] hover:shadow-xl hover:shadow-[var(--color-primary)]/40 text-white rounded-full font-semibold shadow-lg shadow-[var(--color-primary)]/30 transition-all transform hover:-translate-y-1">
+              <Link href="/doctors" className="btn-premium px-8 py-4 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] text-white rounded-lg font-semibold shadow-xl shadow-[var(--color-primary)]/40 hover:shadow-2xl hover:shadow-[var(--color-primary)]/50">
                 Explore Doctors
               </Link>
-              <Link href="/register" className="px-8 py-4 glass-card text-[var(--foreground)] rounded-full font-semibold hover:bg-purple-100/50 dark:hover:bg-purple-900/20 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
-                Contact Us <HeartPulse className="w-4 h-4 text-[var(--color-secondary)]" />
+              <Link href="/register" className="btn-premium px-8 py-4 glass-card text-[var(--foreground)] rounded-lg font-semibold border-2 border-[var(--color-primary)]/20 hover:border-[var(--color-primary)]/50 flex items-center justify-center gap-2">
+                Get Started <HeartPulse className="w-4 h-4 text-[var(--color-secondary)]" />
               </Link>
             </motion.div>
           </div>
@@ -77,22 +77,22 @@ export default function Home() {
               className="grid grid-cols-3 gap-4 md:gap-6"
             >
               {/* Trust Indicator Cards */}
-              <div className="col-span-3 md:col-span-1 p-6 rounded-2xl bg-gradient-to-br from-purple-100 to-purple-50 dark:from-purple-900/30 dark:to-purple-950 border border-purple-200 dark:border-purple-800 shadow-lg">
+              <div className="col-span-3 md:col-span-1 p-8 rounded-2xl bg-gradient-to-br from-purple-100 to-purple-50 dark:from-purple-900/30 dark:to-purple-950 border-2 border-purple-200 dark:border-purple-700/50 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
                 <div className="text-center">
-                  <p className="text-4xl md:text-5xl font-bold text-[var(--color-primary)]">25M+</p>
-                  <p className="text-sm text-[var(--muted)] mt-2">Happy Patients</p>
+                  <p className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-primary)] to-purple-700">25M+</p>
+                  <p className="text-sm font-semibold text-[var(--muted)] mt-3">Happy Patients</p>
                 </div>
               </div>
-              <div className="col-span-3 md:col-span-1 p-6 rounded-2xl bg-gradient-to-br from-pink-100 to-pink-50 dark:from-pink-900/30 dark:to-pink-950 border border-pink-200 dark:border-pink-800 shadow-lg">
+              <div className="col-span-3 md:col-span-1 p-8 rounded-2xl bg-gradient-to-br from-pink-100 to-pink-50 dark:from-pink-900/30 dark:to-pink-950 border-2 border-pink-200 dark:border-pink-700/50 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
                 <div className="text-center">
-                  <p className="text-4xl md:text-5xl font-bold text-[var(--color-secondary)]">99%</p>
-                  <p className="text-sm text-[var(--muted)] mt-2">Satisfaction Rate</p>
+                  <p className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-secondary)] to-pink-700">99%</p>
+                  <p className="text-sm font-semibold text-[var(--muted)] mt-3">Satisfaction Rate</p>
                 </div>
               </div>
-              <div className="col-span-3 md:col-span-1 p-6 rounded-2xl bg-gradient-to-br from-cyan-100 to-cyan-50 dark:from-cyan-900/30 dark:to-cyan-950 border border-cyan-200 dark:border-cyan-800 shadow-lg">
+              <div className="col-span-3 md:col-span-1 p-8 rounded-2xl bg-gradient-to-br from-cyan-100 to-cyan-50 dark:from-cyan-900/30 dark:to-cyan-950 border-2 border-cyan-200 dark:border-cyan-700/50 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
                 <div className="text-center">
-                  <p className="text-4xl md:text-5xl font-bold text-[var(--color-accent)]">1000+</p>
-                  <p className="text-sm text-[var(--muted)] mt-2">Expert Doctors</p>
+                  <p className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-accent)] to-cyan-700">1000+</p>
+                  <p className="text-sm font-semibold text-[var(--muted)] mt-3">Expert Doctors</p>
                 </div>
               </div>
             </motion.div>
@@ -193,16 +193,16 @@ export default function Home() {
               <motion.div 
                 key={i} 
                 variants={itemVariants}
-                className="bg-white dark:bg-zinc-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-purple-100 dark:border-purple-800"
+                className="card-hover bg-white dark:bg-zinc-800 rounded-2xl overflow-hidden shadow-lg border-2 border-purple-100/50 dark:border-purple-800/30"
               >
-                <div className={`h-32 bg-gradient-to-r ${i === 0 ? 'from-purple-500 to-pink-500' : i === 1 ? 'from-pink-500 to-cyan-500' : 'from-cyan-500 to-purple-500'}`}></div>
-                <div className="p-6 text-center relative -mt-16">
-                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-5xl mx-auto mb-4 border-4 border-white dark:border-zinc-800">
+                <div className={`h-36 bg-gradient-to-r ${i === 0 ? 'from-purple-500 via-pink-500 to-purple-600' : i === 1 ? 'from-pink-500 via-cyan-500 to-pink-600' : 'from-cyan-500 via-purple-500 to-cyan-600'}`}></div>
+                <div className="p-8 text-center relative -mt-16">
+                  <div className="w-28 h-28 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-6xl mx-auto mb-6 border-4 border-white dark:border-zinc-800 shadow-lg">
                     {doctor.img}
                   </div>
-                  <h3 className="text-xl font-bold text-[var(--foreground)] mb-1">{doctor.name}</h3>
-                  <p className="text-[var(--color-primary)] font-semibold mb-4">{doctor.specialty}</p>
-                  <Link href="/doctors" className="inline-block px-6 py-2 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] text-white rounded-full text-sm font-semibold hover:shadow-lg transition-all">
+                  <h3 className="text-2xl font-bold text-[var(--foreground)] mb-2">{doctor.name}</h3>
+                  <p className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] font-bold mb-6">{doctor.specialty}</p>
+                  <Link href="/doctors" className="btn-premium inline-block px-6 py-3 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] text-white rounded-lg text-sm font-semibold shadow-lg shadow-[var(--color-primary)]/30">
                     View Profile
                   </Link>
                 </div>
@@ -216,7 +216,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-center mt-16"
           >
-            <Link href="/doctors" className="inline-block px-8 py-4 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] text-white rounded-full font-semibold hover:shadow-lg hover:shadow-[var(--color-primary)]/40 transition-all transform hover:-translate-y-1">
+            <Link href="/doctors" className="btn-premium inline-block px-8 py-4 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] text-white rounded-lg font-semibold shadow-xl shadow-[var(--color-primary)]/40 hover:shadow-2xl hover:shadow-[var(--color-primary)]/50">
               Browse All Doctors
             </Link>
           </motion.div>
