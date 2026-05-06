@@ -247,11 +247,11 @@ export default function RegisterPage() {
                       </motion.div>
                     )}
 
-                    <div className="pt-2">
+                    <div className="pt-3">
                       <button
                         type="submit"
                         disabled={loading}
-                        className="inline-flex w-full items-center justify-center rounded-xl bg-linear-to-r from-primary to-secondary px-4 py-4 text-sm font-bold text-white shadow-lg shadow-(--color-primary)/20 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-(--color-primary)/25 focus:outline-none focus:ring-4 focus:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-60"
+                        className="btn-premium inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] px-4 py-4 text-sm font-bold text-white shadow-lg shadow-[var(--color-primary)]/30 hover:shadow-xl hover:shadow-[var(--color-primary)]/40 focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-60"
                       >
                         {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : 'Create account'}
                       </button>
