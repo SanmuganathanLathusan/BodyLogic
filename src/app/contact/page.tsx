@@ -31,39 +31,39 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="glass-card p-8 rounded-3xl border border-zinc-200 dark:border-zinc-800 text-center hover:border-[var(--color-primary)] transition-colors"
+            className="card-hover glass-card p-8 rounded-2xl border-2 border-pink-200/50 dark:border-pink-700/30 text-center hover:border-[var(--color-secondary)] transition-all"
           >
-            <div className="w-14 h-14 bg-sky-50 dark:bg-sky-900/30 text-[var(--color-secondary)] rounded-2xl flex items-center justify-center mx-auto mb-6">
-               <Phone className="w-7 h-7" />
+            <div className="w-16 h-16 bg-pink-50 dark:bg-pink-900/30 text-[var(--color-secondary)] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-[var(--color-secondary)]/20">
+               <Phone className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-[var(--foreground)]">Phone</h3>
-            <p className="text-[var(--muted)]">+1 (555) 123-4567</p>
+            <h3 className="text-xl font-bold mb-3 text-[var(--foreground)]">Phone</h3>
+            <p className="text-[var(--muted)] font-medium">+1 (555) 123-4567</p>
           </motion.div>
 
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="glass-card p-8 rounded-3xl border border-zinc-200 dark:border-zinc-800 text-center hover:border-[var(--color-primary)] transition-colors"
+            className="card-hover glass-card p-8 rounded-2xl border-2 border-purple-200/50 dark:border-purple-700/30 text-center hover:border-[var(--color-primary)] transition-all"
           >
-            <div className="w-14 h-14 bg-blue-50 dark:bg-blue-900/30 text-[var(--color-primary)] rounded-2xl flex items-center justify-center mx-auto mb-6">
-               <Mail className="w-7 h-7" />
+            <div className="w-16 h-16 bg-purple-50 dark:bg-purple-900/30 text-[var(--color-primary)] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-[var(--color-primary)]/20">
+               <Mail className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-[var(--foreground)]">Email</h3>
-            <p className="text-[var(--muted)]">hello@bodylogic.com</p>
+            <h3 className="text-xl font-bold mb-3 text-[var(--foreground)]">Email</h3>
+            <p className="text-[var(--muted)] font-medium">hello@bodylogic.com</p>
           </motion.div>
 
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="glass-card p-8 rounded-3xl border border-zinc-200 dark:border-zinc-800 text-center hover:border-[var(--color-primary)] transition-colors"
+            className="card-hover glass-card p-8 rounded-2xl border-2 border-cyan-200/50 dark:border-cyan-700/30 text-center hover:border-[var(--color-accent)] transition-all"
           >
-             <div className="w-14 h-14 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
-               <MapPin className="w-7 h-7" />
+             <div className="w-16 h-16 bg-cyan-50 dark:bg-cyan-900/30 text-[var(--color-accent)] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-[var(--color-accent)]/20">
+               <MapPin className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-[var(--foreground)]">Office</h3>
-            <p className="text-[var(--muted)]">123 Wellness Ave, Suite 100<br/>San Francisco, CA 94103</p>
+            <h3 className="text-xl font-bold mb-3 text-[var(--foreground)]">Office</h3>
+            <p className="text-[var(--muted)] font-medium">123 Wellness Ave, Suite 100<br/>San Francisco, CA 94103</p>
           </motion.div>
         </div>
 
@@ -71,29 +71,29 @@ export default function ContactPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="max-w-3xl mx-auto glass-card p-8 md:p-12 rounded-3xl border border-zinc-200 dark:border-zinc-800"
+          className="max-w-3xl mx-auto glass-card p-10 md:p-12 rounded-2xl border-2 border-purple-200/50 dark:border-purple-700/30"
         >
           <h2 className="text-2xl font-bold text-[var(--foreground)] mb-6 text-center">Send Us a Message</h2>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-[var(--foreground)]">First Name</label>
-                <input required type="text" className="w-full px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 focus:ring-2 focus:ring-[var(--color-primary)] outline-none transition-all" placeholder="John" />
+          <form onSubmit={handleSubmit} className="space-y-7">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
+              <div className="space-y-2.5">
+                <label className="text-sm font-semibold text-[var(--foreground)]">First Name</label>
+                <input required type="text" className="w-full px-4 py-3.5 rounded-lg border-2 border-zinc-200/90 bg-white/70 dark:bg-zinc-950/60 dark:border-zinc-800 focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/20 outline-none transition-all" placeholder="John" />
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-[var(--foreground)]">Last Name</label>
-                <input required type="text" className="w-full px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 focus:ring-2 focus:ring-[var(--color-primary)] outline-none transition-all" placeholder="Doe" />
+              <div className="space-y-2.5">
+                <label className="text-sm font-semibold text-[var(--foreground)]">Last Name</label>
+                <input required type="text" className="w-full px-4 py-3.5 rounded-lg border-2 border-zinc-200/90 bg-white/70 dark:bg-zinc-950/60 dark:border-zinc-800 focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/20 outline-none transition-all" placeholder="Doe" />
               </div>
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-[var(--foreground)]">Email</label>
-              <input required type="email" className="w-full px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 focus:ring-2 focus:ring-[var(--color-primary)] outline-none transition-all" placeholder="john@example.com" />
+            <div className="space-y-2.5">
+              <label className="text-sm font-semibold text-[var(--foreground)]">Email</label>
+              <input required type="email" className="w-full px-4 py-3.5 rounded-lg border-2 border-zinc-200/90 bg-white/70 dark:bg-zinc-950/60 dark:border-zinc-800 focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/20 outline-none transition-all" placeholder="john@example.com" />
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-[var(--foreground)]">Message</label>
-              <textarea required rows={4} className="w-full px-4 py-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 focus:ring-2 focus:ring-[var(--color-primary)] outline-none transition-all" placeholder="How can we help you?"></textarea>
+            <div className="space-y-2.5">
+              <label className="text-sm font-semibold text-[var(--foreground)]">Message</label>
+              <textarea required rows={5} className="w-full px-4 py-3.5 rounded-lg border-2 border-zinc-200/90 bg-white/70 dark:bg-zinc-950/60 dark:border-zinc-800 focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/20 outline-none transition-all resize-none" placeholder="How can we help you?"></textarea>
             </div>
-            <button type="submit" className="w-full bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white font-medium py-3 rounded-xl transition-all shadow-lg shadow-[var(--color-primary)]/20 flex items-center justify-center gap-2">
+            <button type="submit" className="btn-premium w-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] hover:from-[var(--color-primary-dark)] hover:to-[var(--color-secondary-dark)] text-white font-semibold py-4 rounded-lg transition-all shadow-lg shadow-[var(--color-primary)]/40 hover:shadow-xl hover:shadow-[var(--color-primary)]/50 flex items-center justify-center gap-2.5 text-base">
               <Send className="w-5 h-5" /> Send Message
             </button>
           </form>
