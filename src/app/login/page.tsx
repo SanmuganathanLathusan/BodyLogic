@@ -17,7 +17,7 @@ export default function LoginPage() {
   });
 
   const inputClassName =
-    'appearance-none block w-full rounded-xl border-2 border-zinc-200/90 bg-white/70 px-4 py-3.5 text-sm shadow-sm outline-none transition-all placeholder:text-zinc-400 focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10 dark:border-zinc-800 dark:bg-zinc-950/60 dark:focus:bg-zinc-900';
+    'appearance-none block w-full rounded-xl border-2 border-zinc-200/90 bg-white/70 px-4 py-4 text-sm shadow-sm outline-none transition-all placeholder:text-zinc-400 focus:border-[var(--color-primary)] focus:bg-white focus:ring-4 focus:ring-[var(--color-primary)]/20 dark:border-zinc-800 dark:bg-zinc-950/60 dark:focus:bg-zinc-900';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -103,11 +103,11 @@ export default function LoginPage() {
               />
             </div>
 
-            <div className="pt-2">
+            <div className="pt-3">
               <button
                 type="submit"
                 disabled={loading}
-                className="inline-flex w-full items-center justify-center rounded-xl bg-linear-to-r from-primary to-secondary px-4 py-4 text-sm font-bold text-white shadow-lg shadow-(--color-primary)/20 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-(--color-primary)/25 focus:outline-none focus:ring-4 focus:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-60"
+                className="btn-premium inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] px-4 py-4 text-sm font-bold text-white shadow-lg shadow-[var(--color-primary)]/30 hover:shadow-xl hover:shadow-[var(--color-primary)]/40 focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : 'Sign In'}
               </button>
