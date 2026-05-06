@@ -70,7 +70,7 @@ export default function DoctorsPage() {
               placeholder="Search by doctor name or specialty..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="block w-full pl-12 pr-4 py-4 text-lg border-2 border-transparent glass-card rounded-2xl leading-5 bg-white/70 dark:bg-zinc-900/70 shadow-lg focus:outline-none focus:border-[var(--color-primary)] focus:bg-white dark:focus:bg-zinc-900 sm:text-lg text-[var(--foreground)] transition-all placeholder:text-zinc-500"
+              className="block w-full pl-12 pr-6 py-4 text-lg border-2 border-transparent glass-card rounded-xl leading-5 bg-white/80 dark:bg-zinc-900/80 shadow-lg hover:shadow-xl focus:outline-none focus:border-[var(--color-primary)] focus:ring-4 focus:ring-[var(--color-primary)]/20 focus:bg-white dark:focus:bg-zinc-900 sm:text-lg text-[var(--foreground)] transition-all placeholder:text-zinc-500"
             />
           </motion.div>
         </div>
@@ -94,7 +94,7 @@ export default function DoctorsPage() {
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.3 }}
                   whileHover={{ y: -8 }}
-                  className="glass-card rounded-[2rem] p-1 shadow-lg hover:shadow-2xl transition-all overflow-hidden flex flex-col group border border-white/40 dark:border-zinc-700/50"
+                  className="glass-card rounded-2xl p-1.5 shadow-xl hover:shadow-2xl transition-all overflow-hidden flex flex-col group border-2 border-white/50 dark:border-zinc-700/40"
                 >
                   <div className="bg-white dark:bg-zinc-900/80 rounded-[1.8rem] flex-1 flex flex-col h-full">
                     <div className="p-8 flex-1">
@@ -128,8 +128,8 @@ export default function DoctorsPage() {
                       </div>
                     </div>
                     
-                    <div className="p-4 border-t border-zinc-100 dark:border-zinc-800/50">
-                      <Link href={`/doctors/${doctor._id}`} className="flex items-center justify-center w-full py-4 rounded-xl bg-zinc-100 dark:bg-zinc-800 text-[var(--foreground)] group-hover:bg-[var(--color-primary)] group-hover:text-white font-bold transition-all shadow-sm group-hover:shadow-[var(--color-primary)]/20 text-lg">
+                    <div className="p-6 border-t border-zinc-100 dark:border-zinc-800/50">
+                      <Link href={`/doctors/${doctor._id}`} className="flex items-center justify-center w-full py-3 rounded-lg btn-premium bg-gradient-to-r from-[var(--color-primary)]/10 to-[var(--color-secondary)]/10 dark:from-[var(--color-primary)]/20 dark:to-[var(--color-secondary)]/20 text-[var(--color-primary)] group-hover:from-[var(--color-primary)] group-hover:to-[var(--color-secondary)] group-hover:text-white font-bold transition-all shadow-sm hover:shadow-lg text-base border border-[var(--color-primary)]/20">
                         View Profile
                       </Link>
                     </div>
