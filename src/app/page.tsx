@@ -49,7 +49,7 @@ export default function Home() {
   const stats = [
     { value: '25M+', label: 'Happy Patients', color: 'from-white to-white/80' },
     { value: '99%', label: 'Satisfaction Rate', color: 'from-white to-white/80' },
-    { value: '1000+', label: 'Expert Doctors', color: 'from-white to-white/80' },
+    { value: '100+', label: 'Expert Doctors', color: 'from-white to-white/80' },
   ];
 
   const steps = [
@@ -129,7 +129,7 @@ export default function Home() {
                   whileHover={{ y: -8 }}
                   className={`p-6 md:p-8 rounded-2xl bg-gradient-to-br ${stat.color} border-2 border-opacity-20 shadow-lg hover:shadow-xl transition-all`}
                 >
-                  <p className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)]">
+                  <p className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] whitespace-nowrap">
                     {stat.value}
                   </p>
                   <p className="text-sm font-semibold text-[var(--muted)] mt-2">{stat.label}</p>
