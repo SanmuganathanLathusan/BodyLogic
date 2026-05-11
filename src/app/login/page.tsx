@@ -4,13 +4,16 @@ import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { HeartPulse, Loader2 } from 'lucide-react';
+import { HeartPulse, Loader2, X } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 
 export default function LoginPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [forgotLoading, setForgotLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -41,6 +44,36 @@ export default function LoginPage() {
       toast.error('An error occurred. Please try again.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!forgotEmail) {
+      toast.error('Please enter your email address');
+      return;
+    }
+
+    setForgotLoading(true);
+    try {
+      const res = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: forgotEmail }),
+      });
+
+      if (res.ok) {
+        toast.success('Password reset email sent! Check your inbox.');
+        setForgotEmail('');
+        setShowForgotPassword(false);
+      } else {
+        const error = await res.json();
+        toast.error(error.message || 'Failed to send reset email');
+      }
+    } catch {
+      toast.error('An error occurred. Please try again.');
+    } finally {
+      setForgotLoading(false);
     }
   };
 
