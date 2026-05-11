@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
-import { HeartPulse, UserCircle, LogOut, Menu, X } from 'lucide-react';
+import { UserCircle, LogOut, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 
@@ -31,19 +31,20 @@ export default function Navbar() {
 
   return (
     <nav 
-      className={clsx(
-        "fixed top-0 w-full z-50 transition-all duration-300",
-        scrolled 
-          ? "glass shadow-sm py-3" 
-          : "bg-transparent py-5"
-      )}
+      className="fixed top-0 w-full z-50 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 shadow-sm"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex justify-between items-center">
           <div className="flex shrink-0 items-center">
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-white shadow-lg shadow-[var(--color-primary)]/30 transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl group-hover:shadow-[var(--color-primary)]/50">
-                <HeartPulse className="h-6 w-6" />
+              <div className="relative flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-white shadow-lg shadow-[var(--color-primary)]/30 transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl group-hover:shadow-[var(--color-primary)]/50">
+                {/* Unique Icon: Pulse with Heart */}
+                <svg className="h-5.5 w-5.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  {/* Pulse line */}
+                  <path d="M2 12h4l2-6 3 12 2-4h5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                  {/* Center dot */}
+                  <circle cx="12" cy="12" r="1.5" fill="white" />
+                </svg>
               </div>
               <span className="font-bold text-xl tracking-tight text-[var(--foreground)]">Body<span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)]">logic</span></span>
             </Link>
