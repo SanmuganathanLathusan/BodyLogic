@@ -13,7 +13,7 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 pt-32 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-16"
@@ -27,47 +27,50 @@ export default function ContactPage() {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
             className="card-hover glass-card p-8 rounded-2xl border-2 border-pink-200/50 dark:border-pink-700/30 text-center hover:border-[var(--color-secondary)] transition-all"
           >
             <div className="w-16 h-16 bg-pink-50 dark:bg-pink-900/30 text-[var(--color-secondary)] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-[var(--color-secondary)]/20">
-               <Phone className="w-8 h-8" />
+              <Phone className="w-8 h-8" />
             </div>
             <h3 className="text-xl font-bold mb-3 text-[var(--foreground)]">Phone</h3>
-            <p className="text-[var(--muted)] font-medium">+1 (555) 123-4567</p>
+            <p className="text-[var(--muted)] font-medium">+94778412323</p>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             className="card-hover glass-card p-8 rounded-2xl border-2 border-purple-200/50 dark:border-purple-700/30 text-center hover:border-[var(--color-primary)] transition-all"
           >
             <div className="w-16 h-16 bg-purple-50 dark:bg-purple-900/30 text-[var(--color-primary)] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-[var(--color-primary)]/20">
-               <Mail className="w-8 h-8" />
+              <Mail className="w-8 h-8" />
             </div>
             <h3 className="text-xl font-bold mb-3 text-[var(--foreground)]">Email</h3>
-            <p className="text-[var(--muted)] font-medium">hello@bodylogic.com</p>
+            <p className="text-[var(--muted)] font-medium">bodylogic@gmail.com</p>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             className="card-hover glass-card p-8 rounded-2xl border-2 border-cyan-200/50 dark:border-cyan-700/30 text-center hover:border-[var(--color-accent)] transition-all"
           >
-             <div className="w-16 h-16 bg-cyan-50 dark:bg-cyan-900/30 text-[var(--color-accent)] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-[var(--color-accent)]/20">
-               <MapPin className="w-8 h-8" />
+            <div className="w-16 h-16 bg-cyan-50 dark:bg-cyan-900/30 text-[var(--color-accent)] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-[var(--color-accent)]/20">
+              <MapPin className="w-8 h-8" />
             </div>
             <h3 className="text-xl font-bold mb-3 text-[var(--foreground)]">Office</h3>
-            <p className="text-[var(--muted)] font-medium">123 Wellness Ave, Suite 100<br/>San Francisco, CA 94103</p>
+            <p className="text-[var(--muted)] font-medium">
+              25 Galle Road, Colombo 03<br />
+              Colombo, Sri Lanka
+            </p>
           </motion.div>
         </div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
