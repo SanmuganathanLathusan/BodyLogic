@@ -31,9 +31,14 @@ export default function Navbar() {
 
   return (
     <nav 
-      className="fixed top-0 w-full z-50 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800 shadow-sm"
+      className={clsx(
+        'fixed top-0 w-full z-50 transition-all duration-300',
+        scrolled 
+          ? 'bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200/50 dark:border-zinc-800/50 shadow-lg' 
+          : 'bg-transparent border-b border-transparent'
+      )}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4">
         <div className="flex justify-between items-center">
           <div className="flex shrink-0 items-center">
             <Link href="/" className="flex items-center gap-2.5 group">
@@ -46,49 +51,49 @@ export default function Navbar() {
                   <circle cx="12" cy="12" r="1.5" fill="white" />
                 </svg>
               </div>
-              <span className="font-bold text-xl tracking-tight text-[var(--foreground)]">Body<span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)]">logic</span></span>
+              <span className="font-bold text-lg md:text-xl tracking-tight text-[var(--foreground)]">Body<span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)]">logic</span></span>
             </Link>
           </div>
           
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-2">
-            <Link href="/" className="relative font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-3 py-2 rounded-lg hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50">
+          <div className="hidden md:flex items-center gap-1">
+            <Link href="/" className="relative font-medium text-sm text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-3 py-2 rounded-lg hover:bg-white/10 dark:hover:bg-zinc-800/50">
               Home
               <span className="absolute inset-x-0 bottom-1 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 rounded-full"></span>
             </Link>
-            <Link href="/doctors" className="relative font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-3 py-2 rounded-lg hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50">
+            <Link href="/doctors" className="relative font-medium text-sm text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-3 py-2 rounded-lg hover:bg-white/10 dark:hover:bg-zinc-800/50">
               All Doctors
               <span className="absolute inset-x-0 bottom-1 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 rounded-full"></span>
             </Link>
-            <Link href="/contact" className="relative font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-3 py-2 rounded-lg hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50">
+            <Link href="/contact" className="relative font-medium text-sm text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-3 py-2 rounded-lg hover:bg-white/10 dark:hover:bg-zinc-800/50">
               Contact
               <span className="absolute inset-x-0 bottom-1 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 rounded-full"></span>
             </Link>
             
             {session ? (
-              <div className="flex items-center gap-3 ml-4 pl-6 border-l border-zinc-200 dark:border-zinc-800">
+              <div className="flex items-center gap-3 ml-4 pl-4 border-l border-zinc-200/50 dark:border-zinc-800/50">
                 <Link
                   href={session.user.role === 'admin' ? '/dashboard/admin' : session.user.role === 'doctor' ? '/dashboard/doctor' : '/dashboard/patient'}
-                  className="flex items-center gap-2 text-sm font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-3 py-2 rounded-lg hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50"
+                  className="flex items-center gap-2 text-xs sm:text-sm font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-3 py-2 rounded-lg hover:bg-white/10 dark:hover:bg-zinc-800/50"
                 >
-                  <UserCircle className="h-5 w-5 text-zinc-500 group-hover:text-[var(--color-primary)] transition-colors" />
-                  <span>Dashboard</span>
+                  <UserCircle className="h-4 w-4 sm:h-5 sm:w-5 text-zinc-500 group-hover:text-[var(--color-primary)] transition-colors" />
+                  <span className="hidden sm:inline">Dashboard</span>
                 </Link>
                 <button
                   onClick={() => signOut({ callbackUrl: '/' })}
-                  className="flex items-center gap-1.5 text-sm font-medium text-red-500 hover:text-red-600 transition-colors px-3.5 py-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/30"
+                  className="flex items-center gap-1.5 text-xs sm:text-sm font-medium text-red-500 hover:text-red-600 transition-colors px-3 py-2 rounded-lg hover:bg-red-50/10 dark:hover:bg-red-950/30"
                 >
                   <LogOut className="h-4 w-4" />
-                  <span>Logout</span>
+                  <span className="hidden sm:inline">Logout</span>
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-2 ml-4 pl-6 border-l border-zinc-200 dark:border-zinc-800">
-                <Link href="/login" className="text-sm font-semibold text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors px-4 py-2 rounded-lg hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50">
+              <div className="flex items-center gap-2 ml-4 pl-4 border-l border-zinc-200/50 dark:border-zinc-800/50">
+                <Link href="/login" className="text-xs sm:text-sm font-semibold text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors px-3 sm:px-4 py-2 rounded-lg hover:bg-white/10 dark:hover:bg-zinc-800/50">
                   Log in
                 </Link>
-                <Link href="/register" className="text-sm font-semibold btn-premium bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-secondary)] to-[var(--color-secondary-dark)] text-white px-5 py-2.5 rounded-lg shadow-lg shadow-[var(--color-primary)]/40 hover:shadow-xl hover:shadow-[var(--color-primary)]/50">
-                  Create account
+                <Link href="/register" className="text-xs sm:text-sm font-semibold btn-premium bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-secondary)] to-[var(--color-secondary-dark)] text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg shadow-lg shadow-[var(--color-primary)]/40 hover:shadow-xl hover:shadow-[var(--color-primary)]/50 transition-all hover:scale-105 active:scale-95">
+                  Sign up
                 </Link>
               </div>
             )}
