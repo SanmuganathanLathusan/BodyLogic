@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { name, email, password, phoneNumber, address, role, specialization, experience, consultationFee } = body;
 
-    if (!name || !email || !password || !role) {
+    if (!name || !email || !password) {
       return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
     }
 
@@ -28,26 +28,8 @@ export async function POST(request: Request) {
       password: hashedPassword,
       phoneNumber,
       address,
-      role: role === 'doctor' ? 'doctor' : 'patient',
+      role: 'patient',
     });
-
-    // If role is doctor, additionally create Doctor profile
-    if (role === 'doctor') {
-      await Doctor.create({
-        userId: user._id,
-        specialization: specialization || 'General',
-        experience: experience || 0,
-        consultationFee: consultationFee || 100,
-        isApproved: false, // Must be approved by admin
-        availability: [
-          { day: "Monday", slots: ["09:00", "10:00", "11:00", "14:00"] },
-          { day: "Tuesday", slots: ["09:00", "10:00", "11:00", "14:00"] },
-          { day: "Wednesday", slots: ["09:00", "10:00", "11:00", "14:00"] },
-          { day: "Thursday", slots: ["09:00", "10:00", "11:00", "14:00"] },
-          { day: "Friday", slots: ["09:00", "10:00", "11:00", "14:00"] },
-        ]
-      });
-    }
 
     return NextResponse.json(
       { message: 'User registered successfully' },
