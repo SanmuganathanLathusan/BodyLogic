@@ -345,11 +345,18 @@ export default function DoctorDashboard() {
                     </div>
                   </div>
                   
-                  <div className="pt-4 flex justify-end">
+                  <div className="pt-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <button
+                      type="button"
+                      onClick={() => router.push('/change-password')}
+                      className="text-[var(--color-primary)] hover:underline font-medium text-sm"
+                    >
+                      Change Password
+                    </button>
                     <button 
                       type="submit" 
                       disabled={savingProfile}
-                      className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white font-medium py-3 px-8 rounded-xl transition-all shadow-lg shadow-[var(--color-primary)]/20 flex items-center justify-center gap-2 disabled:opacity-70"
+                      className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white font-medium py-3 px-8 rounded-xl transition-all shadow-lg shadow-[var(--color-primary)]/20 flex items-center justify-center gap-2 disabled:opacity-70 w-full sm:w-auto"
                     >
                       {savingProfile ? <Loader2 className="w-5 h-5 animate-spin"/> : <Save className="w-5 h-5" />}
                       {savingProfile ? 'Saving...' : 'Save Profile Changes'}
