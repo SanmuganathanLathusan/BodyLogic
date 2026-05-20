@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { signIn, getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { HeartPulse, Loader2, X } from 'lucide-react';
@@ -11,6 +11,7 @@ import { motion } from 'framer-motion';
 export default function LoginPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState<'patient' | 'doctor' | 'admin'>('patient');
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [forgotEmail, setForgotEmail] = useState('');
   const [forgotLoading, setForgotLoading] = useState(false);
@@ -37,7 +38,19 @@ export default function LoginPage() {
         toast.error(res.error);
       } else {
         toast.success('Logged in successfully!');
-        router.push('/');
+        
+        // Fetch session to determine role
+        const session = await getSession();
+        const role = session?.user?.role;
+        
+        if (role === 'admin') {
+          router.push('/dashboard/admin');
+        } else if (role === 'doctor') {
+          router.push('/dashboard/doctor');
+        } else {
+          router.push('/dashboard/patient');
+        }
+        
         router.refresh();
       }
     } catch {
@@ -102,12 +115,18 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <div className="mt-8 rounded-3xl border border-zinc-200/70 bg-zinc-50/80 p-5 text-sm text-(--muted) dark:border-zinc-800 dark:bg-zinc-900/60">
-            New here?{' '}
-            <Link href="/register" className="font-semibold text-primary underline-offset-4 hover:underline">
-              Create an account
-            </Link>
-          </div>
+          {role === 'patient' ? (
+            <div className="mt-8 rounded-3xl border border-zinc-200/70 bg-zinc-50/80 p-5 text-sm text-(--muted) dark:border-zinc-800 dark:bg-zinc-900/60">
+              New here?{' '}
+              <Link href="/register" className="font-semibold text-primary underline-offset-4 hover:underline">
+                Create an account
+              </Link>
+            </div>
+          ) : (
+            <div className="mt-8 rounded-3xl border border-zinc-200/70 bg-zinc-50/80 p-5 text-sm text-(--muted) dark:border-zinc-800 dark:bg-zinc-900/60">
+              {role === 'doctor' ? 'Doctors' : 'Administrators'} are registered internally by the system administrators.
+            </div>
+          )}
         </div>
 
         <div className="rounded-4xl border border-zinc-200/70 bg-white/85 p-6 shadow-[0_30px_100px_-45px_rgba(15,23,42,0.45)] backdrop-blur-xl sm:p-8 dark:border-zinc-800 dark:bg-zinc-950/75">
@@ -146,15 +165,39 @@ export default function LoginPage() {
             </form>
           ) : (
             <form className="space-y-5" onSubmit={handleSubmit}>
+            <div className="mb-6 flex rounded-2xl border border-zinc-200/70 bg-zinc-50 p-1 dark:border-zinc-800 dark:bg-zinc-900/70">
+              <button
+                type="button"
+                onClick={() => setRole('patient')}
+                className={`flex-1 rounded-xl py-2.5 text-xs sm:text-sm font-semibold transition-all ${role === 'patient' ? 'bg-white text-(--foreground) shadow-sm dark:bg-zinc-800' : 'text-(--muted) hover:text-(--foreground)'}`}
+              >
+                Patient
+              </button>
+              <button
+                type="button"
+                onClick={() => setRole('doctor')}
+                className={`flex-1 rounded-xl py-2.5 text-xs sm:text-sm font-semibold transition-all ${role === 'doctor' ? 'bg-white text-(--foreground) shadow-sm dark:bg-zinc-800' : 'text-(--muted) hover:text-(--foreground)'}`}
+              >
+                Doctor
+              </button>
+              <button
+                type="button"
+                onClick={() => setRole('admin')}
+                className={`flex-1 rounded-xl py-2.5 text-xs sm:text-sm font-semibold transition-all ${role === 'admin' ? 'bg-white text-(--foreground) shadow-sm dark:bg-zinc-800' : 'text-(--muted) hover:text-(--foreground)'}`}
+              >
+                Admin
+              </button>
+            </div>
+
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-(--foreground)">Email address</label>
+              <label className="block text-sm font-semibold text-(--foreground)">Email or Username</label>
               <input
-                type="email"
+                type="text"
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className={inputClassName}
-                placeholder="you@example.com"
+                placeholder="you@example.com or username"
               />
             </div>
 
