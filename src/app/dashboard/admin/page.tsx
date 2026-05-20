@@ -19,7 +19,7 @@ export default function AdminDashboard() {
   // Add Doctor Form State
   const [showAddForm, setShowAddForm] = useState(false);
   const [formData, setFormData] = useState({
-    name: '', email: '', password: '', specialization: '', experience: 0, consultationFee: 1650,
+    name: '', email: '', username: '', phoneNumber: '', password: '', specialization: '', experience: 0, consultationFee: 1650,
     imageBase64: '', imageName: ''
   });
 
@@ -101,7 +101,7 @@ export default function AdminDashboard() {
       if (res.ok) {
         toast.success('Doctor created successfully');
         setShowAddForm(false);
-        setFormData({ name: '', email: '', password: '', specialization: '', experience: 0, consultationFee: 1650, imageBase64: '', imageName: '' });
+        setFormData({ name: '', email: '', username: '', phoneNumber: '', password: '', specialization: '', experience: 0, consultationFee: 1650, imageBase64: '', imageName: '' });
         setImagePreview(null);
         fetchData();
       } else {
@@ -197,6 +197,14 @@ export default function AdminDashboard() {
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-[var(--foreground)]">Email Address</label>
                       <input required type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 focus:ring-2 focus:ring-[var(--color-primary)] outline-none" placeholder="jane@clinic.com" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-[var(--foreground)]">Username</label>
+                      <input required type="text" value={formData.username} onChange={e => setFormData({...formData, username: e.target.value})} className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 focus:ring-2 focus:ring-[var(--color-primary)] outline-none" placeholder="drjane123" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-[var(--foreground)]">Phone Number</label>
+                      <input required type="text" value={formData.phoneNumber} onChange={e => setFormData({...formData, phoneNumber: e.target.value})} className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 focus:ring-2 focus:ring-[var(--color-primary)] outline-none" placeholder="+1234567890" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-[var(--foreground)]">Temporary Password</label>
