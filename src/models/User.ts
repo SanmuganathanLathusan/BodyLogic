@@ -13,6 +13,8 @@ const UserSchema = new mongoose.Schema(
       default: 'patient',
     },
     image: { type: String },
+    resetPasswordToken: { type: String },
+    resetPasswordExpires: { type: Date },
   },
   { timestamps: true }
 );
