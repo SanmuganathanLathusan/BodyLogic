@@ -111,7 +111,41 @@ export default function LoginPage() {
         </div>
 
         <div className="rounded-4xl border border-zinc-200/70 bg-white/85 p-6 shadow-[0_30px_100px_-45px_rgba(15,23,42,0.45)] backdrop-blur-xl sm:p-8 dark:border-zinc-800 dark:bg-zinc-950/75">
-          <form className="space-y-5" onSubmit={handleSubmit}>
+          {showForgotPassword ? (
+            <form className="space-y-5" onSubmit={handleForgotPassword}>
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-(--foreground)">Email address</label>
+                <input
+                  type="email"
+                  required
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  className={inputClassName}
+                  placeholder="you@example.com"
+                />
+              </div>
+
+              <div className="pt-3">
+                <button
+                  type="submit"
+                  disabled={forgotLoading}
+                  className="btn-premium inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] px-4 py-4 text-sm font-bold text-white shadow-lg shadow-[var(--color-primary)]/30 hover:shadow-xl hover:shadow-[var(--color-primary)]/40 focus:outline-none focus:ring-4 focus:ring-[var(--color-primary)]/20 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {forgotLoading ? <Loader2 className="h-6 w-6 animate-spin" /> : 'Send Reset Link'}
+                </button>
+              </div>
+              <div className="text-center pt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowForgotPassword(false)}
+                  className="text-sm font-semibold text-(--muted) hover:text-(--foreground)"
+                >
+                  Back to login
+                </button>
+              </div>
+            </form>
+          ) : (
+            <form className="space-y-5" onSubmit={handleSubmit}>
             <div className="space-y-2">
               <label className="block text-sm font-semibold text-(--foreground)">Email address</label>
               <input
@@ -136,6 +170,16 @@ export default function LoginPage() {
               />
             </div>
 
+            <div className="flex items-center justify-between">
+              <button
+                type="button"
+                onClick={() => setShowForgotPassword(true)}
+                className="text-sm font-semibold text-primary hover:underline"
+              >
+                Forgot password?
+              </button>
+            </div>
+
             <div className="pt-3">
               <button
                 type="submit"
@@ -146,6 +190,7 @@ export default function LoginPage() {
               </button>
             </div>
           </form>
+          )}
         </div>
       </motion.div>
     </div>
