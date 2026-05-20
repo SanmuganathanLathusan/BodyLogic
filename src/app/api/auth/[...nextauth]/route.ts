@@ -15,10 +15,12 @@ export const authOptions: AuthOptions = {
       async authorize(credentials) {
         await dbConnect();
         if (!credentials?.email || !credentials?.password) {
-          throw new Error("Missing email or password");
+          throw new Error("Missing credentials");
         }
 
-        const user = await User.findOne({ email: credentials.email });
+        const user = await User.findOne({ 
+          $or: [{ email: credentials.email }, { username: credentials.email }]
+        });
         if (!user) {
           throw new Error("No user found");
         }
@@ -34,6 +36,7 @@ export const authOptions: AuthOptions = {
           name: user.name,
           email: user.email,
           role: user.role,
+          requiresPasswordChange: user.requiresPasswordChange || false,
         };
       },
     }),
@@ -43,9 +46,13 @@ export const authOptions: AuthOptions = {
       if (user) {
         token.id = user.id;
         token.role = (user as any).role;
+        token.requiresPasswordChange = (user as any).requiresPasswordChange;
       }
       if (trigger === "update" && session) {
          token.name = session.name;
+         if (session.requiresPasswordChange !== undefined) {
+           token.requiresPasswordChange = session.requiresPasswordChange;
+         }
       }
       return token;
     },
@@ -53,6 +60,7 @@ export const authOptions: AuthOptions = {
       if (token) {
         session.user.id = token.id as string;
         session.user.role = token.role as string;
+        session.user.requiresPasswordChange = token.requiresPasswordChange as boolean;
       }
       return session;
     },
