@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
+import nodemailer from 'nodemailer';
 import dbConnect from '@/lib/mongodb';
 import User from '@/models/User';
 import Doctor from '@/models/Doctor';
@@ -39,15 +40,15 @@ export async function POST(request: Request) {
 
     await dbConnect();
     const body = await request.json();
-    const { name, email, password, specialization, experience, consultationFee, imageBase64, imageName } = body;
+    const { name, email, username, phoneNumber, password, specialization, experience, consultationFee, imageBase64, imageName } = body;
 
-    if (!name || !email || !password || !specialization) {
+    if (!name || !email || !username || !password || !specialization) {
       return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
     }
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ $or: [{ email }, { username }] });
     if (existingUser) {
-      return NextResponse.json({ message: 'Email already registered' }, { status: 400 });
+      return NextResponse.json({ message: 'Email or Username already registered' }, { status: 400 });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -72,8 +73,11 @@ export async function POST(request: Request) {
     const userData: any = {
       name,
       email,
+      username,
+      phoneNumber,
       password: hashedPassword,
       role: 'doctor',
+      requiresPasswordChange: true,
     };
     if (publicImagePath) userData.image = publicImagePath;
 
@@ -95,7 +99,41 @@ export async function POST(request: Request) {
       ]
     });
 
-    return NextResponse.json({ message: 'Doctor created successfully', doctor }, { status: 201 });
+    // Configure nodemailer
+    const transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: 587,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: `"BodyLogic Admin" <${process.env.EMAIL_USER}>`,
+      to: email,
+      subject: 'Your Doctor Account Created',
+      text: `Hello Dr. ${name},\n\nYour account has been created. You can log in with:\nUsername: ${username}\nTemporary Password: ${password}\n\nPlease log in and change your password.\n\nThank you!`,
+      html: `
+        <p>Hello Dr. ${name},</p>
+        <p>Your account has been created. You can log in with:</p>
+        <ul>
+          <li><strong>Username:</strong> ${username}</li>
+          <li><strong>Temporary Password:</strong> ${password}</li>
+        </ul>
+        <p>Please log in and change your password.</p>
+        <p>Thank you!</p>
+      `,
+    };
+
+    try {
+      await transporter.sendMail(mailOptions);
+    } catch (emailError) {
+      console.error('Failed to send email to doctor:', emailError);
+      // We still return 201 since doctor was created successfully
+    }
+
+    return NextResponse.json({ message: 'Doctor created successfully and email sent', doctor }, { status: 201 });
   } catch (error: any) {
     console.error('Admin doctor creation error:', error);
     return NextResponse.json({ message: error.message || 'Internal server error' }, { status: 500 });
