@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 export default function RegisterPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [role, setRole] = useState<'patient' | 'doctor'>('patient');
+  const [role] = useState<'patient'>('patient');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -104,26 +104,7 @@ export default function RegisterPage() {
           transition={{ delay: 0.08 }}
           className="rounded-4xl border border-zinc-200/70 bg-white/85 p-5 shadow-[0_30px_100px_-45px_rgba(15,23,42,0.45)] backdrop-blur-xl sm:p-8 dark:border-zinc-800 dark:bg-zinc-950/75"
         >
-          <div className="mb-6 flex rounded-2xl border border-zinc-200/70 bg-zinc-50 p-1 dark:border-zinc-800 dark:bg-zinc-900/70">
-                    <button
-                      type="button"
-                      onClick={() => setRole('patient')}
-                      className={`flex-1 rounded-xl py-3 text-sm font-semibold transition-all ${role === 'patient' ? 'bg-white text-(--foreground) shadow-sm dark:bg-zinc-800' : 'text-(--muted) hover:text-(--foreground)'}`}
-                    >
-                      <span className="inline-flex items-center gap-2">
-                        <UserRound className="h-4 w-4" /> Patient
-                      </span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setRole('doctor')}
-                      className={`flex-1 rounded-xl py-3 text-sm font-semibold transition-all ${role === 'doctor' ? 'bg-white text-(--foreground) shadow-sm dark:bg-zinc-800' : 'text-(--muted) hover:text-(--foreground)'}`}
-                    >
-                      <span className="inline-flex items-center gap-2">
-                        <Stethoscope className="h-4 w-4" /> Doctor
-                      </span>
-                    </button>
-                  </div>
+
 
                   <form className="space-y-5" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -200,52 +181,7 @@ export default function RegisterPage() {
                       </div>
                     </div>
 
-                    {role === 'doctor' && (
-                      <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        className="space-y-5 overflow-hidden rounded-2xl border border-zinc-200/70 bg-zinc-50/80 p-4 dark:border-zinc-800 dark:bg-zinc-900/60"
-                      >
-                        <div className="space-y-2">
-                          <label className={labelClassName}>Specialization</label>
-                          <input
-                            type="text"
-                            required={role === 'doctor'}
-                            value={formData.specialization}
-                            placeholder="e.g. Cardiologist"
-                            onChange={(e) => setFormData({ ...formData, specialization: e.target.value })}
-                            className={inputClassName}
-                          />
-                        </div>
 
-                        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                          <div className="space-y-2">
-                            <label className={labelClassName}>Experience (yrs)</label>
-                            <input
-                              type="number"
-                              required={role === 'doctor'}
-                              min="0"
-                              value={formData.experience}
-                              onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
-                              className={inputClassName}
-                              placeholder="8"
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <label className={labelClassName}>Consultation fee ($)</label>
-                            <input
-                              type="number"
-                              required={role === 'doctor'}
-                              min="0"
-                              value={formData.consultationFee}
-                              onChange={(e) => setFormData({ ...formData, consultationFee: e.target.value })}
-                              className={inputClassName}
-                              placeholder="120"
-                            />
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
 
                     <div className="pt-3">
                       <button
