@@ -3,48 +3,48 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* Primary Color Palette */
-  --color-primary: #9333ea; /* Purple 600 */
-  --color-primary-dark: #7e22ce; /* Purple 700 */
-  --color-primary-light: #c084fc; /* Purple 400 */
+  /* Primary Color Palette - Health Teal */
+  --color-primary: #00A7AC; 
+  --color-primary-dark: #008e92;
+  --color-primary-light: #e6f6f7;
   
-  /* Secondary Color Palette */
-  --color-secondary: #ec4899; /* Pink 500 */
-  --color-secondary-dark: #db2777; /* Pink 600 */
-  --color-secondary-light: #f472b6; /* Pink 400 */
+  /* Secondary Color Palette - Complementary Teal/Blue */
+  --color-secondary: #00A7AC;
+  --color-secondary-dark: #008e92;
+  --color-secondary-light: #3bc1c5;
   
   /* Accent Color Palette */
-  --color-accent: #06b6d4; /* Cyan 500 */
-  --color-accent-dark: #0891b2; /* Cyan 600 */
-  --color-accent-light: #22d3ee; /* Cyan 400 */
+  --color-accent: #0ea5e9; 
+  --color-accent-dark: #0284c7;
+  --color-accent-light: #7dd3fc;
   
   /* Success, Warning, Error, Info Colors */
-  --color-success: #10b981; /* Emerald 500 */
-  --color-warning: #f59e0b; /* Amber 500 */
-  --color-error: #ef4444; /* Red 500 */
-  --color-info: #3b82f6; /* Blue 500 */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #0ea5e9;
   
   /* Background Palette */
-  --color-background-light: #FAFAFA; /* Zinc 50 */
-  --color-background-dark: #09090b; /* Zinc 950 */
-  --color-background-secondary-light: #F4F4F5; /* Zinc 100 */
-  --color-background-secondary-dark: #18181b; /* Zinc 900 */
+  --color-background-light: #FFFFFF;
+  --color-background-dark: #09090b;
+  --color-background-secondary-light: #F8FAFC;
+  --color-background-secondary-dark: #111827;
   
   /* Card Colors */
   --color-card-light: #FFFFFF;
-  --color-card-dark: #18181b; /* Zinc 900 */
+  --color-card-dark: #111827;
   
   /* Text Colors */
-  --color-text-light: #09090b; /* Zinc 950 */
-  --color-text-dark: #FAFAFA; /* Zinc 50 */
-  --color-text-muted-light: #71717a; /* Zinc 500 */
-  --color-text-muted-dark: #a1a1aa; /* Zinc 400 */
-  --color-text-disabled-light: #d4d4d8; /* Zinc 300 */
-  --color-text-disabled-dark: #52525b; /* Zinc 600 */
+  --color-text-light: #1e293b;
+  --color-text-dark: #f8fafc;
+  --color-text-muted-light: #64748b;
+  --color-text-muted-dark: #94a3b8;
+  --color-text-disabled-light: #cbd5e1;
+  --color-text-disabled-dark: #475569;
 
   /* Border Colors */
-  --color-border-light: #e4e4e7; /* Zinc 200 */
-  --color-border-dark: #3f3f46; /* Zinc 700 */
+  --color-border-light: #e2e8f0;
+  --color-border-dark: #1e293b;
   
   /* Animation configurations */
   --animate-blob: blob 7s infinite;
@@ -168,10 +168,21 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+  font-family: var(--font-outfit), system-ui, -apple-system, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
   line-height: 1.6;
+  letter-spacing: -0.01em; /* Subtle tighter tracking for premium feel */
 }
+
+/* Typography Refinements */
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.03em; /* Tighter tracking for headings */
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+h1 { font-weight: 900; }
+h2 { font-weight: 800; }
 
 * {
   transition: all 0.3s;
@@ -831,3 +842,15 @@ body {
   background: rgba(147, 51, 234, 0.2);
   color: var(--foreground);
 }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+

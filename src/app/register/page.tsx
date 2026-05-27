@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { HeartPulse, Loader2, UserRound, Stethoscope } from 'lucide-react';
+import { HeartPulse, Loader2, UserRound, Stethoscope, Eye, EyeOff } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 
@@ -11,6 +11,8 @@ export default function RegisterPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [role] = useState<'patient'>('patient');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -74,27 +76,38 @@ export default function RegisterPage() {
 
       <div className="relative mx-auto grid w-full max-w-6xl gap-8 lg:grid-cols-[0.9fr_1.1fr]">
         <motion.aside
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col justify-between rounded-4xl border border-zinc-200/70 bg-white/80 p-8 shadow-[0_30px_100px_-45px_rgba(15,23,42,0.45)] backdrop-blur-xl dark:border-zinc-800 dark:bg-zinc-950/75 sm:p-10"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="relative min-h-[500px] lg:min-h-full rounded-4xl overflow-hidden shadow-[0_30px_100px_-45px_rgba(15,23,42,0.45)]"
         >
-          <div>
-            <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-linear-to-br from-primary to-secondary text-white shadow-lg shadow-(--color-primary)/20">
-              <HeartPulse className="h-7 w-7" />
-            </div>
-            <h1 className="mt-6 text-4xl font-black tracking-tight text-(--foreground)">
-              Create your account
-            </h1>
-            <p className="mt-4 max-w-md text-base leading-7 text-(--muted)">
-              Set up your Bodylogic profile and get started with a cleaner, more polished onboarding flow.
-            </p>
-          </div>
+          <img 
+            src="/uploads/1779276929652-ai-generative-portrait-of-confident-male-doctor-in-white-coat-and-stethoscope-standing-with-arms-crossed-and-looking-at-camera-photo.jpg" 
+            alt="Doctor" 
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-linear-to-t from-slate-900 via-slate-900/40 to-transparent" />
+          
+          <div className="relative flex h-full flex-col justify-between p-10 text-white">
 
-          <div className="mt-8 rounded-3xl border border-zinc-200/70 bg-zinc-50/80 p-5 text-sm text-(--muted) dark:border-zinc-800 dark:bg-zinc-900/60">
-            Already have an account?{' '}
-            <Link href="/login" className="font-semibold text-primary underline-offset-4 hover:underline">
-              Log in
-            </Link>
+            <div className="mt-auto">
+              <h1 className="text-4xl font-black tracking-tight leading-tight">
+                Join our health <br /> <span className="text-[var(--color-primary)]">Revolution.</span>
+              </h1>
+              <p className="mt-4 text-slate-200 text-sm leading-relaxed max-w-xs font-medium">
+                Connect with verified medical professionals and take control of your well-being today.
+              </p>
+              
+              <div className="mt-8 flex items-center gap-4 text-xs font-bold text-slate-300">
+                <div className="flex -space-x-3">
+                  {['patient1.png', 'patient2.png', 'patient3.png'].map((img, i) => (
+                    <div key={i} className="h-9 w-9 rounded-full border-2 border-slate-900 bg-slate-800 overflow-hidden shadow-lg">
+                      <img src={`/uploads/${img}`} alt="User" className="h-full w-full object-cover" />
+                    </div>
+                  ))}
+                </div>
+                <span>Trusted by 10k+ active patients</span>
+              </div>
+            </div>
           </div>
         </motion.aside>
 
@@ -104,9 +117,14 @@ export default function RegisterPage() {
           transition={{ delay: 0.08 }}
           className="rounded-4xl border border-zinc-200/70 bg-white/85 p-5 shadow-[0_30px_100px_-45px_rgba(15,23,42,0.45)] backdrop-blur-xl sm:p-8 dark:border-zinc-800 dark:bg-zinc-950/75"
         >
+          <div className="mb-8 flex items-center justify-between">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Create Account</h2>
+            <Link href="/login" className="text-xs font-bold text-[var(--color-primary)] hover:underline">
+              Already have an account?
+            </Link>
+          </div>
 
-
-                  <form className="space-y-5" onSubmit={handleSubmit}>
+          <form className="space-y-5" onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                       <div className="space-y-2 sm:col-span-2">
                         <label className={labelClassName}>Full name</label>
@@ -158,26 +176,44 @@ export default function RegisterPage() {
 
                       <div className="space-y-2">
                         <label className={labelClassName}>Password</label>
-                        <input
-                          type="password"
-                          required
-                          value={formData.password}
-                          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                          className={inputClassName}
-                          placeholder="Create a secure password"
-                        />
+                        <div className="relative">
+                          <input
+                            type={showPassword ? 'text' : 'password'}
+                            required
+                            value={formData.password}
+                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                            className={`${inputClassName} pr-12`}
+                            placeholder="Create a secure password"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
+                          >
+                            {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                          </button>
+                        </div>
                       </div>
 
                       <div className="space-y-2">
                         <label className={labelClassName}>Confirm password</label>
-                        <input
-                          type="password"
-                          required
-                          value={formData.confirmPassword}
-                          onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                          className={inputClassName}
-                          placeholder="Repeat your password"
-                        />
+                        <div className="relative">
+                          <input
+                            type={showConfirmPassword ? 'text' : 'password'}
+                            required
+                            value={formData.confirmPassword}
+                            onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                            className={`${inputClassName} pr-12`}
+                            placeholder="Repeat your password"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
+                          >
+                            {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                          </button>
+                        </div>
                       </div>
                     </div>
 

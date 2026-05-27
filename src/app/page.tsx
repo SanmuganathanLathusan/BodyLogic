@@ -67,21 +67,24 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col bg-white">
       {/* New Modern Hero Section */}
       <HeroSection />
 
-      {/* How It Works */}
-      <section className="py-20 md:py-32 bg-gradient-to-b from-white to-purple-50/40 dark:from-zinc-900 dark:to-purple-950/20 border-t border-zinc-100/50 dark:border-zinc-800/50">
+      {/* How It Works - Reference Style */}
+      <section id="how-we-help" className="py-24 md:py-32 bg-slate-50 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--color-primary)]/20 to-transparent" />
+        
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16 md:mb-20"
+            className="text-center mb-16 md:mb-24"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--foreground)] mb-4">Simple & Secure Process</h2>
-            <p className="text-base sm:text-lg text-[var(--muted)] max-w-2xl mx-auto">Get expert healthcare in three easy steps</p>
+            <h2 className="text-sm font-bold text-[var(--color-primary)] tracking-[0.2em] uppercase mb-4">Our Process</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-6">How We Can Help You</h2>
+            <div className="w-20 h-1 bg-[var(--color-primary)] mx-auto rounded-full" />
           </motion.div>
 
           <motion.div 
@@ -89,11 +92,8 @@ export default function Home() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 relative"
+            className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 relative"
           >
-            {/* Connection Line */}
-            <div className="hidden md:block absolute top-24 left-[10%] right-[10%] h-1 bg-gradient-to-r from-transparent via-[var(--color-primary)]/30 to-transparent" />
-
             {steps.map((step, i) => (
               <motion.div 
                 key={i}
@@ -101,58 +101,68 @@ export default function Home() {
                 className="relative flex flex-col items-center text-center group"
               >
                 <motion.div 
-                  whileHover={{ scale: 1.08, y: -4 }}
-                  className="w-28 h-28 rounded-full bg-white dark:bg-zinc-800 border-4 border-zinc-100 dark:border-zinc-700 flex items-center justify-center mb-8 shadow-xl relative z-10 transition-all group-hover:shadow-2xl"
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="w-24 h-24 rounded-3xl bg-white shadow-xl flex items-center justify-center mb-8 relative z-10 border border-slate-100 group-hover:border-[var(--color-primary)]/50 transition-all duration-500"
                 >
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] flex items-center justify-center">
+                  <div className="w-16 h-16 rounded-2xl bg-[var(--color-primary)] text-white flex items-center justify-center shadow-lg shadow-[var(--color-primary)]/30">
                     {step.icon}
                   </div>
+                  <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-slate-900 text-white text-xs font-bold flex items-center justify-center shadow-lg">
+                    0{i + 1}
+                  </div>
                 </motion.div>
-                <h3 className="text-xl md:text-2xl font-bold text-[var(--foreground)] mb-3">{step.title}</h3>
-                <p className="text-[var(--muted)] text-sm leading-relaxed">{step.desc}</p>
+                <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-4 group-hover:text-[var(--color-primary)] transition-colors">{step.title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed px-4">{step.desc}</p>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 md:py-32 bg-white dark:bg-zinc-900 border-t border-zinc-100/50 dark:border-zinc-800/50">
+      {/* Features Section - Reference Style Cards */}
+      <section className="py-24 md:py-32 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-center mb-16 md:mb-20"
-          >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--foreground)] mb-4">Why Choose Bodylogic?</h2>
-            <p className="text-base sm:text-lg text-[var(--muted)] max-w-2xl mx-auto">Experience healthcare that truly revolves around you</p>
-          </motion.div>
+          <div className="flex flex-col lg:flex-row justify-between items-end gap-6 mb-16 md:mb-24">
+            <motion.div 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="max-w-2xl"
+            >
+              <h2 className="text-sm font-bold text-[var(--color-primary)] tracking-[0.2em] uppercase mb-4">Why BodyLogic</h2>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900">Experience Premium Healthcare</h2>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+            >
+              <Link href="/doctors" className="flex items-center gap-2 text-[var(--color-primary)] font-bold hover:gap-3 transition-all duration-300">
+                Explore All Services <ArrowRight className="w-5 h-5" />
+              </Link>
+            </motion.div>
+          </div>
 
           <motion.div 
             variants={containerVariants}
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {features.map((feature, i) => (
               <motion.div
                 key={i}
                 variants={itemVariants}
-                whileHover={{ y: -8 }}
-                className="card hover:shadow-2xl transition-all overflow-hidden group"
+                whileHover={{ y: -10 }}
+                className="bg-white p-8 rounded-[2.5rem] shadow-sm hover:shadow-2xl transition-all duration-500 border border-slate-100 group"
               >
-                <div className={`h-40 bg-gradient-to-br ${feature.bg}`} />
-                <div className="p-8 -mt-14 relative">
-                  <div className="w-24 h-24 rounded-2xl bg-white dark:bg-zinc-800 shadow-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <div className={`w-20 h-20 rounded-xl bg-gradient-to-br ${feature.bg} flex items-center justify-center`}>
-                      {feature.icon}
-                    </div>
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-bold text-[var(--foreground)] mb-3">{feature.title}</h3>
-                  <p className="text-[var(--muted)] text-sm leading-relaxed">{feature.desc}</p>
+                <div className="w-16 h-16 rounded-2xl bg-slate-50 text-[var(--color-primary)] flex items-center justify-center mb-8 group-hover:bg-[var(--color-primary)] group-hover:text-white transition-all duration-500">
+                  {i === 0 ? <ShieldCheck className="w-8 h-8" /> : i === 1 ? <CalendarCheck className="w-8 h-8" /> : <Activity className="w-8 h-8" />}
                 </div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">{feature.title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed mb-8">{feature.desc}</p>
+                <div className="w-12 h-[2px] bg-slate-100 group-hover:w-full group-hover:bg-[var(--color-primary)] transition-all duration-500" />
               </motion.div>
             ))}
           </motion.div>
@@ -160,15 +170,16 @@ export default function Home() {
       </section>
 
       {/* Benefits Grid */}
-      <section className="py-20 md:py-32 bg-gradient-to-b from-purple-50/40 to-white dark:from-purple-950/20 dark:to-zinc-900 border-t border-zinc-100/50 dark:border-zinc-800/50">
+      <section className="py-24 md:py-32 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-center mb-16 md:mb-20"
+            className="text-center mb-16 md:mb-24"
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--foreground)] mb-4">What Sets Us Apart</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-4">Latest news and events</h2>
+            <div className="w-20 h-1 bg-[var(--color-primary)] mx-auto rounded-full" />
           </motion.div>
 
           <motion.div 
@@ -176,21 +187,24 @@ export default function Home() {
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8"
+            className="grid grid-cols-1 lg:grid-cols-2 gap-8"
           >
             {benefits.map((benefit, i) => (
               <motion.div
                 key={i}
                 variants={itemVariants}
-                whileHover={{ y: -4 }}
-                className="card p-6 md:p-8 flex gap-5 md:gap-6 items-start hover:shadow-lg transition-all"
+                whileHover={{ scale: 1.02 }}
+                className="bg-white p-6 md:p-10 rounded-[3rem] flex flex-col sm:flex-row gap-8 items-center sm:items-start hover:shadow-xl transition-all border border-slate-100"
               >
-                <div className="w-14 h-14 md:w-16 md:h-16 rounded-xl bg-gradient-to-br from-[var(--color-primary)]/10 to-[var(--color-secondary)]/10 flex-shrink-0 flex items-center justify-center text-[var(--color-primary)]">
-                  {benefit.icon}
+                <div className="w-20 h-20 rounded-3xl bg-[var(--color-primary)]/5 flex-shrink-0 flex items-center justify-center text-[var(--color-primary)]">
+                  {i === 0 ? <Award className="w-10 h-10" /> : i === 1 ? <Zap className="w-10 h-10" /> : i === 2 ? <ShieldCheck className="w-10 h-10" /> : <Users className="w-10 h-10" />}
                 </div>
-                <div>
-                  <h3 className="text-lg md:text-xl font-bold text-[var(--foreground)] mb-2">{benefit.title}</h3>
-                  <p className="text-[var(--muted)] text-sm leading-relaxed">{benefit.desc}</p>
+                <div className="text-center sm:text-left">
+                  <h3 className="text-xl md:text-2xl font-bold text-slate-900 mb-3">{benefit.title}</h3>
+                  <p className="text-slate-500 text-sm leading-relaxed mb-6">{benefit.desc}</p>
+                  <button className="text-[var(--color-primary)] text-sm font-bold flex items-center gap-2 mx-auto sm:mx-0 hover:gap-3 transition-all">
+                    Find out more <ArrowRight className="w-4 h-4" />
+                  </button>
                 </div>
               </motion.div>
             ))}
@@ -198,28 +212,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 md:py-32 bg-white dark:bg-zinc-900 border-t border-zinc-100/50 dark:border-zinc-800/50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      {/* CTA Section - Reference Style */}
+      <section className="py-24 md:py-32 bg-[var(--color-primary)] relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-black/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[var(--foreground)] mb-6">Ready to Get Started?</h2>
-            <p className="text-base sm:text-lg text-[var(--muted)] mb-10 max-w-2xl mx-auto leading-relaxed">Join thousands of patients who trust Bodylogic for their healthcare needs.</p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-8">Stay updated!</h2>
+            <p className="text-white/80 text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
+              We are supporting healthcare innovation to make a difference. Keep informed of our progress and how you can become part of the transformation.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-6">
               <Link 
                 href="/register"
-                className="inline-flex items-center justify-center px-6 md:px-8 py-3 md:py-4 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] text-white rounded-lg font-semibold shadow-lg shadow-[var(--color-primary)]/40 hover:shadow-xl hover:shadow-[var(--color-primary)]/50 hover:-translate-y-0.5 active:translate-y-0 transition-all"
+                className="px-10 py-5 bg-white text-[var(--color-primary)] rounded-full font-bold shadow-2xl hover:shadow-white/20 hover:-translate-y-1 transition-all flex items-center justify-center gap-2"
               >
-                Create Your Account
-              </Link>
-              <Link 
-                href="/contact"
-                className="inline-flex items-center justify-center px-6 md:px-8 py-3 md:py-4 border-2 border-[var(--color-primary)] text-[var(--color-primary)] bg-transparent rounded-lg font-semibold hover:bg-[var(--color-primary)]/5 transition-all"
-              >
-                Contact Us
+                Sign up for our Newsletter <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
           </motion.div>

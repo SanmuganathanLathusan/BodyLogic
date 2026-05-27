@@ -14,7 +14,9 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState({ patients: 0, doctors: 0, appointments: 0 });
   const [doctors, setDoctors] = useState<any[]>([]);
   const [appointments, setAppointments] = useState<any[]>([]);
+  const [requests, setRequests] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [processingId, setProcessingId] = useState<string | null>(null);
   
   // Add Doctor Form State
   const [showAddForm, setShowAddForm] = useState(false);
@@ -36,14 +38,16 @@ export default function AdminDashboard() {
 
   const fetchData = async () => {
     try {
-      const [statsRes, docsRes, apptRes] = await Promise.all([
+      const [statsRes, docsRes, apptRes, requestsRes] = await Promise.all([
         fetch('/api/admin/stats'),
         fetch('/api/admin/doctors'),
-        fetch('/api/appointments')
+        fetch('/api/appointments'),
+        fetch('/api/admin/doctor-requests')
       ]);
       if (statsRes.ok) setStats(await statsRes.json());
       if (docsRes.ok) setDoctors(await docsRes.json());
       if (apptRes.ok) setAppointments(await apptRes.json());
+      if (requestsRes.ok) setRequests(await requestsRes.json());
     } catch (error) {
       console.error(error);
     } finally {
@@ -110,6 +114,28 @@ export default function AdminDashboard() {
       }
     } catch {
       toast.error('Failed to create doctor');
+    }
+  };
+
+  const handleRequestAction = async (id: string, status: 'approved' | 'rejected') => {
+    setProcessingId(id);
+    try {
+      const res = await fetch(`/api/admin/doctor-requests/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status })
+      });
+      if (res.ok) {
+        toast.success(`Request ${status === 'approved' ? 'Approved' : 'Rejected'}`);
+        fetchData();
+      } else {
+        const error = await res.json();
+        toast.error(error.message || `Failed to ${status} request`);
+      }
+    } catch {
+      toast.error(`Failed to ${status} request`);
+    } finally {
+      setProcessingId(null);
     }
   };
 
@@ -246,6 +272,80 @@ export default function AdminDashboard() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Doctor Access Requests */}
+        <div className="mb-8 bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800 overflow-hidden">
+          <div className="p-6 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
+            <h2 className="text-xl font-semibold text-[var(--foreground)]">Doctor Access Requests</h2>
+            <p className="text-sm text-[var(--muted)] mt-1">Review and approve new doctor registrations</p>
+          </div>
+          
+          {requests.filter(r => r.status === 'pending').length === 0 ? (
+            <div className="p-12 text-center text-[var(--muted)]">No pending requests at the moment.</div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm whitespace-nowrap">
+                <thead className="bg-zinc-50 dark:bg-zinc-900 text-zinc-500 border-b border-zinc-200 dark:border-zinc-800">
+                  <tr>
+                    <th className="px-6 py-4 font-medium">Doctor Info</th>
+                    <th className="px-6 py-4 font-medium">Specialization</th>
+                    <th className="px-6 py-4 font-medium">Reg. Number</th>
+                    <th className="px-6 py-4 font-medium">Exp.</th>
+                    <th className="px-6 py-4 font-medium text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
+                  {requests.filter(r => r.status === 'pending').map((request) => (
+                    <tr key={request._id} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/20 transition-colors">
+                      <td className="px-6 py-4">
+                        <div className="flex flex-col">
+                          <span className="font-bold text-[var(--foreground)]">{request.fullName}</span>
+                          <span className="text-xs text-[var(--muted)]">{request.email}</span>
+                          <span className="text-xs text-[var(--muted)]">{request.phoneNumber}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="flex flex-col">
+                          <span className="text-[var(--foreground)]">{request.specialization}</span>
+                          <span className="text-xs text-[var(--muted)]">{request.hospitalName}</span>
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-[var(--muted)]">{request.registrationNumber}</td>
+                      <td className="px-6 py-4 text-[var(--muted)]">{request.experience} Years</td>
+                      <td className="px-6 py-4 text-right space-x-2">
+                        {request.licenseUrl && (
+                          <button 
+                            onClick={() => {
+                              const win = window.open();
+                              if (win) win.document.write(`<iframe src="${request.licenseUrl}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%; font-family: sans-serif;" allowfullscreen></iframe>`);
+                            }}
+                            className="px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200 text-zinc-600 text-xs font-bold transition-all"
+                          >
+                            View License
+                          </button>
+                        )}
+                        <button 
+                          disabled={!!processingId}
+                          onClick={() => handleRequestAction(request._id, 'approved')}
+                          className="px-3 py-1.5 rounded-lg bg-green-500 hover:bg-green-600 text-white text-xs font-bold transition-all disabled:opacity-50"
+                        >
+                          {processingId === request._id ? <Loader2 className="w-3 h-3 animate-spin mx-auto" /> : 'Approve'}
+                        </button>
+                        <button 
+                          disabled={!!processingId}
+                          onClick={() => handleRequestAction(request._id, 'rejected')}
+                          className="px-3 py-1.5 rounded-lg bg-red-500 hover:bg-red-600 text-white text-xs font-bold transition-all disabled:opacity-50"
+                        >
+                          Reject
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
 
         <div className="bg-white dark:bg-zinc-900 rounded-2xl shadow-sm border border-zinc-200 dark:border-zinc-800 overflow-hidden">
           <div className="p-6 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center bg-zinc-50 dark:bg-zinc-900/50">

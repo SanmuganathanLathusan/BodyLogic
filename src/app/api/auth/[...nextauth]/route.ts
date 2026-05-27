@@ -47,9 +47,11 @@ export const authOptions: AuthOptions = {
         token.id = user.id;
         token.role = (user as any).role;
         token.requiresPasswordChange = (user as any).requiresPasswordChange;
+        token.picture = (user as any).image;
       }
       if (trigger === "update" && session) {
-         token.name = session.name;
+         if (session.name) token.name = session.name;
+         if (session.image) token.picture = session.image;
          if (session.requiresPasswordChange !== undefined) {
            token.requiresPasswordChange = session.requiresPasswordChange;
          }
@@ -61,6 +63,7 @@ export const authOptions: AuthOptions = {
         session.user.id = token.id as string;
         session.user.role = token.role as string;
         session.user.requiresPasswordChange = token.requiresPasswordChange as boolean;
+        session.user.image = token.picture as string;
       }
       return session;
     },

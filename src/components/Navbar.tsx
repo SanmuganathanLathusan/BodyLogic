@@ -3,14 +3,17 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
-import { UserCircle, LogOut, Menu, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { UserCircle, LogOut, Menu, X, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
 
 export default function Navbar() {
+  const router = useRouter();
   const { data: session } = useSession();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [profileImage, setProfileImage] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,6 +22,26 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Fetch latest profile image from DB whenever session changes
+  useEffect(() => {
+    if (session?.user?.email) {
+      fetch('/api/profile')
+        .then(res => res.ok ? res.json() : null)
+        .then(data => {
+          if (data?.image) {
+            setProfileImage(data.image);
+          } else {
+            setProfileImage(session.user.image || null);
+          }
+        })
+        .catch(() => {
+          setProfileImage(session?.user?.image || null);
+        });
+    } else {
+      setProfileImage(null);
+    }
+  }, [session]);
 
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -34,65 +57,95 @@ export default function Navbar() {
       className={clsx(
         'fixed top-0 w-full z-50 transition-all duration-300',
         scrolled 
-          ? 'bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200/50 dark:border-zinc-800/50 shadow-lg' 
-          : 'bg-transparent border-b border-transparent'
+          ? 'bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border-b border-zinc-200/50 dark:border-zinc-800/50 shadow-sm' 
+          : 'bg-white/50 backdrop-blur-sm border-b border-transparent'
       )}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4">
         <div className="flex justify-between items-center">
           <div className="flex shrink-0 items-center">
             <Link href="/" className="flex items-center gap-2.5 group">
-              <div className="relative flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-secondary)] text-white shadow-lg shadow-[var(--color-primary)]/30 transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl group-hover:shadow-[var(--color-primary)]/50">
-                {/* Unique Icon: Pulse with Heart */}
-                <svg className="h-5.5 w-5.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  {/* Pulse line */}
-                  <path d="M2 12h4l2-6 3 12 2-4h5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-                  {/* Center dot */}
-                  <circle cx="12" cy="12" r="1.5" fill="white" />
-                </svg>
+              <div className="relative flex items-center justify-center w-11 h-11 rounded-full bg-white border border-slate-100 shadow-sm transition-all duration-300 group-hover:scale-110 overflow-hidden">
+                <img src="/brand/logo.png" alt="BodyLogic Logo" className="w-full h-full object-contain scale-[1.9] translate-y-1" />
               </div>
-              <span className="font-bold text-lg md:text-xl tracking-tight text-[var(--foreground)]">Body<span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)]">logic</span></span>
+              <span className="font-bold text-xl tracking-tight text-slate-900 dark:text-white">
+                Body<span className="text-[var(--color-primary)]">Logic</span>
+              </span>
             </Link>
           </div>
           
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-1">
-            <Link href="/" className="relative font-medium text-sm text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-3 py-2 rounded-lg hover:bg-white/10 dark:hover:bg-zinc-800/50">
-              Home
-              <span className="absolute inset-x-0 bottom-1 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 rounded-full"></span>
-            </Link>
-            <Link href="/doctors" className="relative font-medium text-sm text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-3 py-2 rounded-lg hover:bg-white/10 dark:hover:bg-zinc-800/50">
-              All Doctors
-              <span className="absolute inset-x-0 bottom-1 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 rounded-full"></span>
-            </Link>
-            <Link href="/contact" className="relative font-medium text-sm text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-3 py-2 rounded-lg hover:bg-white/10 dark:hover:bg-zinc-800/50">
-              Contact
-              <span className="absolute inset-x-0 bottom-1 h-0.5 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-secondary)] transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 rounded-full"></span>
-            </Link>
+          <div className="hidden lg:flex items-center gap-8">
+            <div className="flex items-center gap-6">
+              <Link href="/" className="font-medium text-sm text-slate-600 hover:text-[var(--color-primary)] transition-colors">
+                Home
+              </Link>
+              <Link href="/doctors" className="font-medium text-sm text-slate-600 hover:text-[var(--color-primary)] transition-colors">
+                Find Doctors
+              </Link>
+              <Link href="/contact" className="font-medium text-sm text-slate-600 hover:text-[var(--color-primary)] transition-colors">
+                Contact
+              </Link>
+            </div>
+
+            {/* Search Bar - Reference Style */}
+            <div className="relative hidden xl:block">
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                const term = (e.currentTarget.elements.namedItem('search') as HTMLInputElement).value;
+                if (term) {
+                  router.push(`/doctors?search=${encodeURIComponent(term)}`);
+                }
+              }}>
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Search className="h-4 w-4 text-slate-400" />
+                </div>
+                <input
+                  name="search"
+                  type="text"
+                  placeholder="Search..."
+                  className="block w-48 pl-10 pr-3 py-1.5 border border-slate-200 rounded-full bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:bg-white transition-all w-full max-w-[200px]"
+                />
+              </form>
+            </div>
             
             {session ? (
-              <div className="flex items-center gap-3 ml-4 pl-4 border-l border-zinc-200/50 dark:border-zinc-800/50">
+              <div className="flex items-center gap-5 border-l border-slate-200 pl-6">
                 <Link
                   href={session.user.role === 'admin' ? '/dashboard/admin' : session.user.role === 'doctor' ? '/dashboard/doctor' : '/dashboard/patient'}
-                  className="flex items-center gap-2 text-xs sm:text-sm font-medium text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors group px-3 py-2 rounded-lg hover:bg-white/10 dark:hover:bg-zinc-800/50"
+                  className="group flex items-center gap-3"
                 >
-                  <UserCircle className="h-4 w-4 sm:h-5 sm:w-5 text-zinc-500 group-hover:text-[var(--color-primary)] transition-colors" />
-                  <span className="hidden sm:inline">Dashboard</span>
+                  <div className="flex flex-col items-end">
+                    <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider leading-none">Dashboard</span>
+                    <span className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-[var(--color-primary)] transition-colors">
+                      {session.user.name?.split(' ')[0]}
+                    </span>
+                  </div>
+                  <div className="relative">
+                    <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-zinc-800 border-2 border-white dark:border-zinc-900 shadow-sm overflow-hidden transition-transform group-hover:scale-110 group-hover:border-[var(--color-primary)]">
+                      {profileImage ? (
+                        <img src={profileImage} alt="User" className="w-full h-full object-cover" />
+                      ) : (
+                        <UserCircle className="w-full h-full p-1 text-slate-400" />
+                      )}
+                    </div>
+                    <div className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-white dark:border-zinc-950 rounded-full"></div>
+                  </div>
                 </Link>
                 <button
                   onClick={() => signOut({ callbackUrl: '/' })}
-                  className="flex items-center gap-1.5 text-xs sm:text-sm font-medium text-red-500 hover:text-red-600 transition-colors px-3 py-2 rounded-lg hover:bg-red-50/10 dark:hover:bg-red-950/30"
+                  className="p-2.5 rounded-full text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 transition-all group"
+                  title="Logout"
                 >
-                  <LogOut className="h-4 w-4" />
-                  <span className="hidden sm:inline">Logout</span>
+                  <LogOut className="h-5 w-5 group-hover:scale-110" />
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-2 ml-4 pl-4 border-l border-zinc-200/50 dark:border-zinc-800/50">
-                <Link href="/login" className="text-xs sm:text-sm font-semibold text-[var(--foreground)] hover:text-[var(--color-primary)] transition-colors px-3 sm:px-4 py-2 rounded-lg hover:bg-white/10 dark:hover:bg-zinc-800/50">
+              <div className="flex items-center gap-4 border-l border-slate-200 pl-4">
+                <Link href="/login" className="text-sm font-semibold text-slate-700 hover:text-[var(--color-primary)] transition-colors">
                   Log in
                 </Link>
-                <Link href="/register" className="text-xs sm:text-sm font-semibold btn-premium bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-secondary)] to-[var(--color-secondary-dark)] text-white px-3 sm:px-5 py-2 sm:py-2.5 rounded-lg shadow-lg shadow-[var(--color-primary)]/40 hover:shadow-xl hover:shadow-[var(--color-primary)]/50 transition-all hover:scale-105 active:scale-95">
+                <Link href="/register" className="text-sm font-semibold bg-[var(--color-primary)] text-white px-5 py-2.5 rounded-full shadow-md hover:bg-[var(--color-primary-dark)] hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:scale-95">
                   Sign up
                 </Link>
               </div>
@@ -100,10 +153,10 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          <div className="lg:hidden flex items-center">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-[var(--foreground)] p-2 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+              className="text-slate-600 p-2 rounded-md hover:bg-slate-100 transition-colors"
             >
               {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -115,37 +168,67 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden glass border-t border-zinc-200 dark:border-zinc-800 overflow-hidden"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="lg:hidden bg-white border-t border-slate-100 overflow-hidden shadow-xl"
           >
-            <div className="px-4 py-4 flex flex-col gap-4">
-              <Link onClick={() => setMobileMenuOpen(false)} href="/" className="font-medium text-[var(--foreground)] p-2 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800">
+            <div className="px-4 py-6 flex flex-col gap-4">
+              <Link onClick={() => setMobileMenuOpen(false)} href="/" className="font-medium text-slate-700 p-2 rounded-md hover:bg-slate-50">
                 Home
               </Link>
-              <Link onClick={() => setMobileMenuOpen(false)} href="/doctors" className="font-medium text-[var(--foreground)] p-2 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800">
-                All Doctors
+              <Link onClick={() => setMobileMenuOpen(false)} href="/doctors" className="font-medium text-slate-700 p-2 rounded-md hover:bg-slate-50">
+                Find Doctors
               </Link>
-              <Link onClick={() => setMobileMenuOpen(false)} href="/contact" className="font-medium text-[var(--foreground)] p-2 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800">
+              <Link onClick={() => setMobileMenuOpen(false)} href="/contact" className="font-medium text-slate-700 p-2 rounded-md hover:bg-slate-50">
                 Contact
               </Link>
               
-              <div className="h-px bg-zinc-200 dark:bg-zinc-800 w-full"></div>
+              <div className="relative mt-2">
+                <form onSubmit={(e) => {
+                  e.preventDefault();
+                  const term = (e.currentTarget.elements.namedItem('search-mobile') as HTMLInputElement).value;
+                  if (term) {
+                    setMobileMenuOpen(false);
+                    router.push(`/doctors?search=${encodeURIComponent(term)}`);
+                  }
+                }}>
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Search className="h-4 w-4 text-slate-400" />
+                  </div>
+                  <input
+                    name="search-mobile"
+                    type="text"
+                    placeholder="Search doctors..."
+                    className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 rounded-xl bg-slate-50 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:bg-white transition-all"
+                  />
+                </form>
+              </div>
+              
+              <div className="h-px bg-slate-100 w-full mt-2"></div>
               
               {session ? (
                 <>
                   <Link
                     onClick={() => setMobileMenuOpen(false)}
                     href={session.user.role === 'admin' ? '/dashboard/admin' : session.user.role === 'doctor' ? '/dashboard/doctor' : '/dashboard/patient'}
-                    className="flex items-center gap-2 font-medium text-[var(--foreground)] p-2 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                    className="flex items-center gap-3 font-medium text-slate-700 p-3 rounded-xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all"
                   >
-                    <UserCircle className="h-5 w-5" />
-                    <span>Dashboard</span>
+                    <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-zinc-800 border overflow-hidden">
+                      {profileImage ? (
+                        <img src={profileImage} alt="User" className="w-full h-full object-cover" />
+                      ) : (
+                        <UserCircle className="w-full h-full p-1 text-slate-400" />
+                      )}
+                    </div>
+                    <div>
+                      <div className="text-xs font-semibold text-slate-500 uppercase">Dashboard</div>
+                      <div className="text-sm font-bold text-slate-900">{session.user.name}</div>
+                    </div>
                   </Link>
                   <button
                     onClick={() => { setMobileMenuOpen(false); signOut({ callbackUrl: '/' }); }}
-                    className="flex items-center gap-2 font-medium text-red-500 p-2 rounded-md hover:bg-red-50 dark:hover:bg-red-900/20 text-left"
+                    className="flex items-center gap-2 font-medium text-red-500 p-2 rounded-md hover:bg-red-50"
                   >
                     <LogOut className="h-5 w-5" />
                     <span>Logout</span>
@@ -153,10 +236,10 @@ export default function Navbar() {
                 </>
               ) : (
                 <div className="flex flex-col gap-3 pt-2">
-                  <Link onClick={() => setMobileMenuOpen(false)} href="/login" className="w-full text-center font-semibold border-2 border-zinc-300 dark:border-zinc-700 text-[var(--foreground)] px-4 py-3 rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-all transform hover:scale-105">
+                  <Link onClick={() => setMobileMenuOpen(false)} href="/login" className="w-full text-center font-semibold border border-slate-200 text-slate-700 px-4 py-3 rounded-xl hover:bg-slate-50">
                     Log in
                   </Link>
-                  <Link onClick={() => setMobileMenuOpen(false)} href="/register" className="w-full text-center font-semibold btn-premium bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-secondary)] to-[var(--color-secondary-dark)] text-white px-4 py-3 rounded-lg shadow-lg shadow-[var(--color-primary)]/40">
+                  <Link onClick={() => setMobileMenuOpen(false)} href="/register" className="w-full text-center font-semibold bg-[var(--color-primary)] text-white px-4 py-3 rounded-xl shadow-lg">
                     Create account
                   </Link>
                 </div>

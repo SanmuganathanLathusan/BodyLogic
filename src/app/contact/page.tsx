@@ -11,7 +11,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 pt-32 pb-16">
+    <div className="min-h-screen bg-zinc-100 dark:bg-zinc-950 pt-32 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
