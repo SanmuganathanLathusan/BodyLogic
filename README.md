@@ -11,7 +11,7 @@
 
 ## 🚀 Live Demo
 Experience the platform in action:  
-🔗 **[Live Demo Link (Replace with your actual URL)](https://body-logic-iota.vercel.app/)**
+🔗 **[Live Demo Link ](https://body-logic-iota.vercel.app/)**
 
 ---
 
@@ -102,18 +102,5 @@ BodyLogic follows a **modern, minimalist healthcare aesthetic**:
 
 ---
 
-## 🤝 Contributing
 
-We welcome contributions! Please feel free to submit a Pull Request or open an issue for any suggestions.
 
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-<p align="center">
-  Built with ❤️ by the BodyLogic Team
-</p>
